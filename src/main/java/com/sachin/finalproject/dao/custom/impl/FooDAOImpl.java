@@ -5,6 +5,7 @@ import com.sachin.finalproject.dao.exception.ConstraintViolationException;
 import com.sachin.finalproject.entity.Food;
 import com.sachin.finalproject.util.CrudUtil;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class FooDAOImpl implements FoodDAO {
+    private Connection connection;
+
+    public FooDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public Food save(Food food) throws ConstraintViolationException {
         try {

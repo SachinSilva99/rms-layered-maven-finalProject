@@ -6,6 +6,7 @@ import com.sachin.finalproject.dao.exception.ConstraintViolationException;
 import com.sachin.finalproject.entity.Item;
 import com.sachin.finalproject.util.CrudUtil;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,6 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class ItemDAOImpl implements ItemDAO {
+    private Connection connection;
+
+    public ItemDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public Item save(Item item) throws ConstraintViolationException {
         boolean isSaved = CrudUtil.execute("INSERT INTO item (id, des, category, subcategory, qtyOnHand, price, size) VALUES (?, ?, ?, ?, ?, ?, ?)",

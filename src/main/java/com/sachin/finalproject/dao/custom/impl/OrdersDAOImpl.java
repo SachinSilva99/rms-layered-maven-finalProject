@@ -5,6 +5,7 @@ import com.sachin.finalproject.dao.exception.ConstraintViolationException;
 import com.sachin.finalproject.entity.Orders;
 import com.sachin.finalproject.util.CrudUtil;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class OrdersDAOImpl implements OrdersDAO {
+    private Connection connection;
+
+    public OrdersDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public Orders save(Orders orders) throws ConstraintViolationException {
         boolean isSaved = CrudUtil.execute("INSERT INTO orders (id, date, customerId, orderType) VALUES (?,?,?,?)",

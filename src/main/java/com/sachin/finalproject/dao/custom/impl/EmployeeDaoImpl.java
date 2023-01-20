@@ -6,6 +6,7 @@ import com.sachin.finalproject.dao.exception.ConstraintViolationException;
 import com.sachin.finalproject.entity.Employee;
 import com.sachin.finalproject.util.CrudUtil;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,6 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class EmployeeDaoImpl implements EmployeeDAO {
+    private Connection connection;
+
+    public EmployeeDaoImpl(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
     public Employee save(Employee employee) throws ConstraintViolationException {

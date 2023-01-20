@@ -7,6 +7,7 @@ import com.sachin.finalproject.entity.Salary;
 import com.sachin.finalproject.util.CrudUtil;
 
 import java.lang.module.ResolutionException;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +16,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class SalaryDAOImpl implements SalaryDAO {
+    private Connection connection;
+
+    public SalaryDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public Salary save(Salary salary) throws ConstraintViolationException {
         try {

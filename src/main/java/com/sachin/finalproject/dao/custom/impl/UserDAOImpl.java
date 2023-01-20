@@ -7,6 +7,7 @@ import com.sachin.finalproject.entity.User;
 import com.sachin.finalproject.util.CrudUtil;
 import javafx.scene.image.Image;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,6 +15,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDAOImpl implements UserDAO {
+    private Connection connection;
+
+    public UserDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public User save(User user) throws ConstraintViolationException {
         boolean isSaved = CrudUtil.execute("INSERT INTO user(username, password, image, role, usertype, name) VALUES (?,?,?,?,?,?)",

@@ -5,6 +5,7 @@ import com.sachin.finalproject.dao.exception.ConstraintViolationException;
 import com.sachin.finalproject.entity.Customer;
 import com.sachin.finalproject.util.CrudUtil;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CustomerDAOImpl implements CustomerDAO {
+    private Connection connection;
   /*public static void main(String[] args) {
         CustomerDAOImpl customerDAO = new CustomerDAOImpl();
        *//* Customer save = customerDAO.save(new Customer("sac", "male", "Aluthgama", "s000001", "077"));
@@ -22,6 +24,11 @@ public class CustomerDAOImpl implements CustomerDAO {
         System.out.println(all);*//*
       System.out.println(customerDAO.count());
   }*/
+
+    public CustomerDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public Customer save(Customer customer) throws ConstraintViolationException {
         try {
