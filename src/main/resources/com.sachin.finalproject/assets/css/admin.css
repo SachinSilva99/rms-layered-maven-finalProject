@@ -1,0 +1,50 @@
+.text-field{
+    -fx-text-inner-color: #b2c1d9;
+    -fx-prompt-text-fill: #56657d;
+}
+.text-field:hover{
+    -fx-background-color: #02030A;
+}
+.combo-box:hover{
+     -fx-background-color: #02030A;
+}
+.text-area{
+    -fx-text-inner-color: #b2c1d9;
+    -fx-prompt-text-fill: #56657d;
+}
+.text-area:hover{
+    -fx-background-color: #02030A;
+}
+.button:hover{
+
+}
+#registerBtn{
+    -fx-background-color:  #349759;
+}
+#registerBtn:hover{
+    -fx-background-color: #b2c1d9;
+}
+#updateBtn:hover{
+    -fx-background-color: #b2c1d9;
+}
+#updateBtn{
+    -fx-background-color:  #33C3A6;
+}
+.jfx-combo-box {
+
+    -fx-prompt-text-fill: #56657d;
+    -fx-background-color: transparent;
+}
+
+.jfx-combo-box .cell {
+    -fx-text-fill: #b2c1d9;
+    -fx-background-color: #05071F;
+
+}
+.jfx-combo-box .cell:hover{
+    -fx-text-fill: #b2c1d9;
+    -fx-background-color: #10165F;
+}
+.button:hover{
+    -fx-background-color: #05071F;
+}

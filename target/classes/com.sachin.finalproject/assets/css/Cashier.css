@@ -1,0 +1,122 @@
+.button
+{
+-fx-background-color : #05071F;
+-fx-text-fill : #e7e5e5;
+}
+.button:hover{
+-fx-background-color : #10165F;
+}
+.button:pressed
+{
+-fx-background-color : #1620A1;
+}
+
+.scroll-pane {
+    -fx-background-color: #02030A;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color:transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #10165F;
+    -fx-background-radius: 5em;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: black;
+}
+#back:hover{
+    -fx-background-color: #10165F;
+}
+#back{
+    -fx-background-color: #05071F;
+    -fx-background-radius: 15;
+}
+
+.table-view .column-header{
+    -fx-background-color: #40826d;
+}
+.table-view{
+    -fx-background-color:  #02030A;
+}
+.table-view-row-cell{
+    -fx-background-color: red;
+}
+
+.table-row-cell:filled {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent -fx-lightest-grey-color -fx-lightest-grey-color , transparent;
+    -fx-border-insets: 0, 1;
+}
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+}
+.table-row-cell:filled:hover {
+    -fx-background-color: #10165F;
+}
+.table-row-cell:filled:selected:hover {
+    -fx-background-color: #5c87cc;
+}
+.table-row-cell:filled:selected {
+    -fx-background-color: #5c87cc;
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0;
+}
+.table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: black;
+}
+.table-view .cell:filled{
+    -fx-cell-size: 30;
+    -fx-alignment: center-left;
+    -fx-text-fill: #99c0ff;
+}
+.table-view{
+    -fx-table-cell-border-color: transparent;
+}
+.table-view{
+    -fx-alignment: center;
+}
+#txtSearchFood{
+    -fx-text-inner-color: #b2c1d9;
+}
+#textSearchDrink{
+    -fx-text-inner-color: #b2c1d9;
+}
+#txtSearchDessert{
+    -fx-text-inner-color: #b2c1d9;
+}
+#txtName{
+    -fx-text-inner-color:#b2c1d9;
+}
+#txtPhoeNumber{
+    -fx-text-inner-color:#b2c1d9;
+}
+.jfx-combo-box {
+
+    -fx-prompt-text-fill: white;
+}
+
+.jfx-combo-box .cell {
+    -fx-text-fill: white;
+    -fx-background-color: black;
+}
+.jfx-combo-box .cell:hover{
+    -fx-text-fill: white;
+    -fx-background-color: #10165F;
+}
+

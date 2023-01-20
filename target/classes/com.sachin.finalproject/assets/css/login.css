@@ -1,0 +1,28 @@
+
+/*--------- Buttons -------------*/
+#loginBtn{
+    -fx-background-color:  #288adf;
+}
+#loginBtn:hover{
+    -fx-background-color:  #05101a;
+}
+#exitBtn:hover{
+    -fx-background-color: #e76060;
+}
+#exitBtn{
+    -fx-background-color: red;
+}
+/*----------------------------------*/
+
+/*--------- Text fields -------------*/
+#txtPassword{
+    -fx-prompt-text-fill: white;
+    -fx-text-inner-color: white;
+}
+#txtUsername{
+    -fx-prompt-text-fill: white;
+    -fx-text-inner-color: white;
+}
+
+
+/*----------------------------------*/

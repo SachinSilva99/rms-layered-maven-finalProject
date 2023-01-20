@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sachin.finalproject.controller.AdminFormController">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="1.0">
+         <children>
+            <ImageView fitHeight="158.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/images/myImage.jpeg" />
+               </image>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </ImageView>
+            <Label text="Manager" textFill="#e7e5e5">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="lblAdminName" text="Sachin Tharuka" textFill="#349759">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+            </Label>
+            <Button fx:id="employeeBtn" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#handleClicks" prefHeight="50.0" prefWidth="255.0" stylesheets="@../assets/css/Cashier.css" text="Employee">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/employee.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+            <Button fx:id="customerBtn" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#handleClicks" prefHeight="50.0" prefWidth="259.0" stylesheets="@../assets/css/Cashier.css" text="Customer">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/customer.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+            <Button fx:id="salaryBtn" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#handleClicks" prefHeight="50.0" prefWidth="259.0" stylesheets="@../assets/css/Cashier.css" text="Salary">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/salary.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+            <Button fx:id="stockBtn" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#handleClicks" prefHeight="50.0" prefWidth="259.0" stylesheets="@../assets/css/Cashier.css" text="Stock">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/stock.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+            <Button fx:id="settingsBtn" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#handleClicks" prefHeight="50.0" prefWidth="259.0" stylesheets="@../assets/css/Cashier.css" text="Settings">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+            <Button fx:id="btnSignout" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#handleClicks" prefHeight="50.0" prefWidth="259.0" stylesheets="@../assets/css/Cashier.css" text="Log Out">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+         </children>
+      </VBox>
+      <StackPane layoutX="257.0" layoutY="1.0" prefHeight="768.0" prefWidth="1108.0" style="-fx-background-color: #02030A;">
+         <children>
+            <Pane fx:id="pnlEmployee" prefHeight="768.0" prefWidth="1100.0" visible="false">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Employee" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Pane layoutX="57.0" layoutY="143.0" prefHeight="523.0" prefWidth="408.0" style="-fx-background-color: #05071F; -fx-background-radius: 20;">
+                     <children>
+                        <Label layoutX="117.0" layoutY="14.0" text="Register/Update" textFill="#e7e5e5">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <VBox layoutX="118.0" layoutY="69.0" prefHeight="418.0" prefWidth="171.0" spacing="20.0">
+                           <children>
+                              <JFXTextField fx:id="txtNameE" onKeyPressed="#txtNameEOnKeyPressed" promptText="Name" stylesheets="@../assets/css/admin.css" />
+                              <JFXTextField fx:id="txtNicE" onKeyPressed="#txtNicEOnKeyPressed" promptText="NIC" stylesheets="@../assets/css/admin.css" />
+                              <JFXComboBox fx:id="comboRole" promptText="Role" stylesheets="@../assets/css/admin.css" />
+                              <JFXTextField fx:id="txtSalary" onKeyPressed="#txtSalaryOnPressed" promptText="Salary" stylesheets="@../assets/css/admin.css" />
+                              <JFXTextArea fx:id="txtAddress" onKeyPressed="#txtAddressOnPressed" prefHeight="35.0" prefWidth="171.0" promptText="Address" stylesheets="@../assets/css/admin.css" />
+                              <JFXDatePicker fx:id="dateDobE" promptText="Date Of Birth" stylesheets="@../assets/css/admin.css" />
+                              <JFXTextField fx:id="txtPhoneNumberE" onKeyPressed="#txtPhoneNumberEOnPressed" promptText="Phone Number" stylesheets="@../assets/css/admin.css" />
+                              <JFXComboBox fx:id="comboGenderE" promptText="Gender" stylesheets="@../assets/css/admin.css" />
+                           </children>
+                        </VBox>
+                        <JFXButton fx:id="registerBtn" layoutX="121.0" layoutY="474.0" onAction="#btnRegisterOnAction" prefHeight="35.0" prefWidth="66.0" stylesheets="@../assets/css/admin.css" text="Register">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="updateBtn" layoutX="220.0" layoutY="474.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="66.0" stylesheets="@../assets/css/admin.css" text="Update">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </JFXButton>
+                        <Label fx:id="warningE" layoutX="121.0" layoutY="451.0" textFill="#ff5151" />
+                     </children>
+                  </Pane>
+                  <Pane layoutX="482.0" layoutY="141.0" prefHeight="483.0" prefWidth="614.0">
+                     <children>
+                        <TableView fx:id="employeeTbl" onMouseClicked="#tableEmployeeOnClicked" prefHeight="605.0" prefWidth="614.0" style="-fx-background-radius: 20;" stylesheets="@../assets/css/Cashier.css">
+                           <columns>
+                              <TableColumn fx:id="colNicE" prefWidth="148.0" text="NIC" />
+                              <TableColumn fx:id="colNameE" prefWidth="259.0" text="Name" />
+                              <TableColumn fx:id="colRoleE" minWidth="0.0" prefWidth="137.0" text="Role" />
+                              <TableColumn fx:id="colDelE" minWidth="0.0" prefWidth="69.0" text="Del" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </Pane>
+               </children></Pane>
+            <Pane fx:id="pnlCustomer" prefHeight="768.0" prefWidth="1100.0" visible="false">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Customer" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Pane layoutX="57.0" layoutY="143.0" prefHeight="483.0" prefWidth="408.0" style="-fx-background-color: #05071F; -fx-background-radius: 20;">
+                     <children>
+                        <Label layoutX="117.0" layoutY="14.0" text="Update" textFill="#e7e5e5">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <VBox layoutX="118.0" layoutY="102.0" spacing="25.0">
+                           <children>
+                              <JFXTextField fx:id="txtNameC" onKeyReleased="#txtNameCOnKeyReleased" promptText="Name" stylesheets="@../assets/css/admin.css" />
+                              <JFXTextField fx:id="txtId" editable="false" promptText="Id" stylesheets="@../assets/css/admin.css" />
+                              <JFXTextField fx:id="txtPhoneNumberC" onKeyReleased="#txtPhoneNumberCOnKeyReleased" promptText="Phone Number" stylesheets="@../assets/css/admin.css" />
+                              <JFXTextArea fx:id="txtAddressC" onKeyReleased="#txtAddressCOnKeyReleased" prefHeight="63.0" prefWidth="135.0" promptText="Address" stylesheets="@../assets/css/admin.css" />
+                              <JFXComboBox fx:id="comboGenderC" promptText="Gender" stylesheets="@../assets/css/admin.css" />
+                           </children>
+                        </VBox>
+                        <JFXButton fx:id="btnUpdateC" layoutX="117.0" layoutY="399.0" onAction="#btnUpdateCOnAction" prefHeight="35.0" prefWidth="66.0" style="-fx-background-color: #33C3A6;" text="Update">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="482.0" layoutY="141.0" prefHeight="483.0" prefWidth="614.0">
+                     <children>
+                        <TableView fx:id="customerTbl" onMouseClicked="#customerTblOnAction" prefHeight="605.0" prefWidth="614.0" style="-fx-background-radius: 20;" stylesheets="@../assets/css/Cashier.css">
+                           <columns>
+                              <TableColumn fx:id="colPhoneNumberC" prefWidth="122.0" text="Phone Number" />
+                              <TableColumn fx:id="colNameC" prefWidth="165.0" text="Name" />
+                              <TableColumn fx:id="colAddressC" minWidth="0.0" prefWidth="263.0" text="Address" />
+                              <TableColumn fx:id="colDobEcolDelC1" minWidth="0.0" prefWidth="63.0" text="Del" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlSales" prefHeight="768.0" prefWidth="1100.0" visible="false">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Sales" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <PieChart fx:id="pieChartCategory" layoutX="84.0" layoutY="384.0" prefHeight="119.0" prefWidth="255.0" title="category" />
+                  <JFXDatePicker layoutX="57.0" layoutY="71.0" promptText="From" />
+                  <JFXDatePicker layoutX="265.0" layoutY="71.0" promptText="To" />
+                  <Label layoutX="57.0" layoutY="132.0" text="Orders :" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblOrdersTotal" layoutX="143.0" layoutY="132.0" text="100" textFill="#5097da">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="265.0" layoutY="132.0" text="Total : Rs." textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTotalAmount" layoutX="366.0" layoutY="132.0" text="120000" textFill="#40bc5f">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <LineChart layoutX="380.0" layoutY="268.0" title="Net Profit Per Day">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </LineChart>
+                  <Label layoutX="506.0" layoutY="43.0" text="Most visited Customer  " textFill="#e7e5e5">
+                     <font>
+                        <Font name="Consolas" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="507.0" layoutY="107.0" text="Most Profit profit gained Customer " textFill="#e7e5e5">
+                     <font>
+                        <Font name="Consolas" size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="506.0" layoutY="70.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="lblMostVisitedCustomerName" text="Sachin Tharuka" textFill="#51dcff">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblMostVisitedCustomerPN" text="0771234567" textFill="#51dcff">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="506.0" layoutY="136.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="lblMosProfitCustomerName" text="Sachin Silva" textFill="#32cd66">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblProfitVisitedCustomerPN" text="0771234567" textFill="#32cd66">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblProfitVisitedCustomerTotal" text="1200000" textFill="#bc4e4e">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlSalary" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Salary" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <JFXDatePicker fx:id="dateFromSalary" layoutX="57.0" layoutY="349.0" promptText="From" stylesheets="@../assets/css/admin.css" />
+                  <Label layoutX="57.0" layoutY="320.0" text="Month" textFill="#b9b9b9" />
+                  <TableView fx:id="salaryTbl" layoutX="57.0" layoutY="403.0" prefHeight="307.0" prefWidth="951.0" stylesheets="@../assets/css/Cashier.css">
+                    <columns>
+                      <TableColumn fx:id="colNicSalary" prefWidth="106.99996948242188" text="NIC" />
+                      <TableColumn fx:id="colNameSalary" prefWidth="369.0" text="Name" />
+                        <TableColumn fx:id="colSalarySalary" minWidth="2.0" prefWidth="160.0" text="Salary" />
+                        <TableColumn fx:id="colStatus" prefWidth="104.0" text="Status" />
+                        <TableColumn fx:id="colMonthSalary" prefWidth="95.0" text="Month" />
+                        <TableColumn fx:id="colDateSalary" prefWidth="115.0" text="Date" />
+                    </columns>
+                  </TableView>
+                  <HBox layoutX="60.0" layoutY="115.0" spacing="25.0">
+                     <children>
+                        <JFXComboBox fx:id="comboNicSE" onAction="#comboNicSEOnAction" promptText="Employee Nic" stylesheets="@../assets/css/admin.css" />
+                        <JFXTextField fx:id="txtNameES" editable="false" promptText="Name" stylesheets="@../assets/css/admin.css" />
+                        <JFXTextField fx:id="txtRoleSE" editable="false" prefHeight="25.0" prefWidth="109.0" promptText="Role" stylesheets="@../assets/css/admin.css" />
+                        <JFXTextField fx:id="txtSalaryeES" editable="false" promptText="Salary" stylesheets="@../assets/css/admin.css" />
+                        <JFXDatePicker fx:id="dateSalaryES" prefHeight="25.0" prefWidth="105.0" promptText="Date" stylesheets="@../assets/css/admin.css" />
+                        <JFXButton fx:id="btnPay" onAction="#btnPayOnAction" prefHeight="25.0" prefWidth="87.0" style="-fx-background-color: green;" stylesheets="@../assets/css/admin.css" text="Pay" />
+                     </children>
+                  </HBox>
+                  <JFXButton layoutX="251.0" layoutY="349.0" onAction="#btnLoadDetailsSalary" prefHeight="25.0" prefWidth="87.0" style="-fx-background-color: green;" stylesheets="@../assets/css/admin.css" text="Load Details" />
+               </children></Pane>
+            <Pane fx:id="pnlStock" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Stock" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="57.0" layoutY="96.0" prefHeight="576.0" prefWidth="650.0" spacing="10.0">
+                     <children>
+                        <Pane prefHeight="393.0" prefWidth="320.0" style="-fx-background-color: #05071F; -fx-background-radius: 10;">
+                           <children>
+                              <Label layoutX="107.0" layoutY="14.0" text="Add Quantity" textFill="#e7e5e5">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <VBox layoutX="21.0" layoutY="79.0" spacing="30.0">
+                                 <children>
+                                    <JFXTextField fx:id="txtIdS" onKeyReleased="#txtIdSOnKeyReleased" promptText="Id" stylesheets="@../assets/css/admin.css" />
+                                    <JFXComboBox fx:id="comboCategoryS" onAction="#comboCategorySOnAction" promptText="Category" stylesheets="@../assets/css/admin.css" />
+                                    <JFXComboBox fx:id="subCategoryS" onAction="#subCategorySOnAction" prefHeight="25.0" prefWidth="92.0" promptText="Sub Category" stylesheets="@../assets/css/admin.css" />
+                                    <JFXComboBox fx:id="comboNameS" onAction="#comboNameS" prefHeight="25.0" prefWidth="151.0" promptText="Name" stylesheets="@../assets/css/admin.css" />
+                                    <JFXComboBox fx:id="comboSizeS" onAction="#comboSizeSOnAction" prefHeight="25.0" prefWidth="151.0" promptText="Size" stylesheets="@../assets/css/admin.css" />
+                                    <JFXTextField fx:id="txtQtyS" onKeyReleased="#txtQtySOnReleased" prefHeight="25.0" prefWidth="74.0" promptText="Quantity" stylesheets="@../assets/css/admin.css" />
+                                    <JFXTextField fx:id="txtPrice" onKeyReleased="#txtPriceOnReleased" prefHeight="25.0" prefWidth="74.0" promptText="Price Per Item" stylesheets="@../assets/css/admin.css" />
+                                 </children>
+                              </VBox>
+                              <HBox layoutX="17.0" layoutY="519.0" spacing="30.0">
+                                 <children>
+                                    <JFXButton fx:id="btnAddS" onAction="#btnAddSOnAction" style="-fx-background-color: #1f631e;" stylesheets="@../assets/css/admin.css" text="Add Item" textFill="#c9c9c9" />
+                                    <JFXButton fx:id="btnUpdateS" onAction="#btnUpdateSOnAction" style="-fx-background-color: #8a1388;" stylesheets="@../assets/css/admin.css" text="Update " textFill="#c9c9c9" />
+                                    <JFXButton fx:id="btnDeleteS" style="-fx-background-color: #a82727;" stylesheets="@../assets/css/admin.css" text="Delete" textFill="#c9c9c9" />
+                                 </children>
+                              </HBox>
+                              <Label fx:id="lblStockWarning" layoutX="200.0" layoutY="467.0" textFill="#c93e3e">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="393.0" prefWidth="320.0" style="-fx-background-color: #05071F; -fx-background-radius: 10;">
+                           <children>
+                              <Label layoutX="98.0" layoutY="14.0" text="Add New Item" textFill="#e7e5e5">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <VBox layoutX="23.0" layoutY="93.0" spacing="30.0" />
+                              <VBox layoutX="13.0" layoutY="81.0" prefHeight="190.0" prefWidth="143.0" spacing="30.0">
+                                 <children>
+                                    <JFXComboBox fx:id="comboCategorySNew" onAction="#comboCategorySNewOnAction" promptText="Category" stylesheets="@../assets/css/admin.css" />
+                                    <JFXComboBox fx:id="subCategorySNew" onAction="#subCategorySOnAction" prefHeight="25.0" prefWidth="92.0" promptText="Sub Category" stylesheets="@../assets/css/admin.css" />
+                                    <JFXTextField fx:id="newItemName" onKeyReleased="#newItemNameOnKeyReleased" prefHeight="25.0" prefWidth="70.0" promptText="New Item Name" stylesheets="@../assets/css/admin.css" />
+                                    <JFXButton fx:id="btnNewFood" onAction="#btnNewFoodOnAction" style="-fx-background-color: #1f631e;" stylesheets="@../assets/css/admin.css" text="Add New Food" textFill="#c9c9c9" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
+               </children></Pane>
+            <Pane fx:id="pnlSettings" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Settings" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <VBox layoutX="57.0" layoutY="90.0" spacing="30.0">
+                     <children>
+                        <JFXComboBox fx:id="comboUserType" prefHeight="25.0" prefWidth="98.0" promptText="User Type" stylesheets="@../assets/css/admin.css" />
+                        <JFXTextField fx:id="txtENameS" promptText="Employee Name" />
+                        <JFXTextField fx:id="txtUsername" promptText="Username" stylesheets="@../assets/css/admin.css" />
+                        <JFXPasswordField fx:id="txtPasswordUser" promptText="Password" stylesheets="@../assets/css/admin.css" />
+                        <JFXComboBox fx:id="comboRoleUser" promptText="Role" stylesheets="@../assets/css/admin.css" />
+                     </children>
+                  </VBox>
+                  <HBox layoutX="57.0" layoutY="359.0" spacing="50.0">
+                     <children>
+                        <JFXButton fx:id="bnChooseimg" onAction="#bnChooseimgOnAction" style="-fx-background-color: #17571f;" stylesheets="@../assets/css/admin.css" text="Choose Image" textFill="#667c90" />
+                        <JFXButton fx:id="btnuserSave" onAction="#btnuserSaveOnAction" prefHeight="25.0" prefWidth="91.0" style="-fx-background-color: #122366;" stylesheets="@../assets/css/admin.css" text="Save" textFill="#667c90" />
+                     </children>
+                  </HBox>
+                  <ImageView fx:id="userimg" fitHeight="150.0" fitWidth="200.0" layoutX="277.0" layoutY="50.0" pickOnBounds="true" />
+               </children>
+            </Pane>
+         </children>
+      </StackPane>
+   </children>
+   <effect>
+      <DropShadow color="#1b1eeb" />
+   </effect>
+</AnchorPane>

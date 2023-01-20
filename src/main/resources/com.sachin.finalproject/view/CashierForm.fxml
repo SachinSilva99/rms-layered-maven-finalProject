@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sachin.finalproject.controller.CashierFormController">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="1.0">
+         <children>
+            <ImageView fx:id="cashierImg" fitHeight="158.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../assets/images/myImage.jpeg" />
+               </image>
+            </ImageView>
+            <Label text="Cashier " textFill="#e7e5e5">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="lblCashierName" textFill="#349759">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+            </Label>
+            <Button fx:id="foodBtn" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="50.0" prefWidth="255.0" stylesheets="@../assets/css/Cashier.css" text="Food">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/food.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+            <Button fx:id="drinkBtn" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="50.0" prefWidth="259.0" stylesheets="@../assets/css/Cashier.css" text="Drink">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/drink.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+            <Button fx:id="dessertBtn" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="50.0" prefWidth="259.0" stylesheets="@../assets/css/Cashier.css" text="Dessert">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/dessert.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+            <Button fx:id="btnSignout" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="50.0" prefWidth="259.0" stylesheets="@../assets/css/Cashier.css" text="Log Out">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
+         </children>
+      </VBox>
+      <StackPane layoutX="232.0" layoutY="1.0" prefHeight="768.0" prefWidth="682.0" style="-fx-background-color: #02030A;">
+         <children>
+            <Pane fx:id="foodPnl" prefHeight="768.0" prefWidth="729.0" visible="false">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Food" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="37.0" layoutY="163.0" prefHeight="605.0" prefWidth="628.0">
+                     <children>
+                        <TableView fx:id="foodTbl" onMouseClicked="#tableFoodOnClicked" prefHeight="605.0" prefWidth="666.0" stylesheets="@../assets/css/Cashier.css">
+                           <columns>
+                              <TableColumn fx:id="colCodeFood" prefWidth="75.0" text="Code" />
+                              <TableColumn fx:id="colNameFood" prefWidth="212.0" text="Name" />
+                              <TableColumn fx:id="colSizeFood" minWidth="0.0" prefWidth="113.0" text="Size" />
+                              <TableColumn fx:id="colQtyOnHandFood" minWidth="0.0" prefWidth="72.0" text="QTY_On_Hand" />
+                              <TableColumn fx:id="colPriceFood" minWidth="0.0" prefWidth="184.0" text="Price" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </HBox>
+                  <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="649.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/search.png" />
+                     </image>
+                  </ImageView>
+                  <JFXTextField fx:id="txtSearchFood" layoutX="530.0" layoutY="34.0" onAction="#txtSearchFood" stylesheets="@../assets/css/Cashier.css" />
+                  <HBox layoutX="57.0" layoutY="103.0" prefHeight="43.0" prefWidth="346.0" spacing="40.0">
+                     <children>
+                        <JFXRadioButton fx:id="radioAllFood" onAction="#radioAllFoodOnAction" text="All" textFill="#e7e5e5">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="FoodSelection" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton fx:id="radioRice" onAction="#radioRiceOnAction" text="Rice" textFill="#e7e5e5" toggleGroup="$FoodSelection" />
+                        <JFXRadioButton fx:id="radioPizza" onAction="#radioPizzaOnAction" text="Pizza" textFill="#e7e5e5" toggleGroup="$FoodSelection" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="494.0" layoutY="74.0" maxHeight="80.0" maxWidth="170.0" minHeight="80.0" minWidth="170.0" prefHeight="80.0" prefWidth="170.0">
+                     <children>
+                        <ImageView fitHeight="80.0" fitWidth="170.0" pickOnBounds="true" />
+                     </children>
+                  </HBox>
+                  <ImageView fx:id="testImg" fitHeight="96.0" fitWidth="101.0" layoutX="350.0" layoutY="39.0" pickOnBounds="true" />
+               </children>
+            </Pane>
+            <Pane fx:id="drinkPnl" prefHeight="768.0" prefWidth="729.0" visible="false">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Drink" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="37.0" layoutY="163.0" prefHeight="605.0" prefWidth="628.0">
+                     <children>
+                        <TableView fx:id="drinkTbl" onMouseClicked="#drinkTblOnClicked" prefHeight="605.0" prefWidth="666.0" stylesheets="@../assets/css/Cashier.css">
+                           <columns>
+                              <TableColumn fx:id="colCodeDrink" prefWidth="75.0" text="Code" />
+                              <TableColumn fx:id="colNameDrink" prefWidth="212.0" text="Name" />
+                              <TableColumn fx:id="colSizeDrink" minWidth="0.0" prefWidth="113.0" text="Size" />
+                              <TableColumn fx:id="colQtyOnHandDrink" minWidth="0.0" prefWidth="97.0" text="QTY_On_Hand" />
+                              <TableColumn fx:id="colpriceDrink" minWidth="0.0" prefWidth="159.0" text="Price" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </HBox>
+                  <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="649.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/search.png" />
+                     </image>
+                  </ImageView>
+                  <JFXTextField fx:id="textSearchDrink" layoutX="522.0" layoutY="33.0" onAction="#textSearchDrinkOnAction" style="-fx-text-inner-color: #b2c1d9;" />
+                  <HBox layoutX="57.0" layoutY="103.0" prefHeight="43.0" prefWidth="346.0" spacing="40.0">
+                     <children>
+                        <JFXRadioButton fx:id="radioAllDrink" onAction="#radioAllDrinkOnAction" text="All" textFill="#e7e5e5">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="FoodSelection1" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton fx:id="radiosoftDrink" onAction="#radiosoftDrinkOnAction" text="Soft Drink" textFill="#e7e5e5" toggleGroup="$FoodSelection1" />
+                        <JFXRadioButton fx:id="radioHotDrink" onAction="#radioHotDrinkOnAction" text="Hot drink" textFill="#e7e5e5" toggleGroup="$FoodSelection1" />
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+            <Pane fx:id="dessertPnl" focusTraversable="true" prefHeight="768.0" prefWidth="729.0" visible="false">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Dessert" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="37.0" layoutY="163.0" prefHeight="605.0" prefWidth="657.0">
+                     <children>
+                        <TableView fx:id="dessertTbl" onMouseClicked="#dessertTblOnClicked" prefHeight="605.0" prefWidth="628.0" stylesheets="@../assets/css/Cashier.css">
+                           <columns>
+                              <TableColumn fx:id="colCodeDessert" prefWidth="75.0" text="Code" />
+                              <TableColumn fx:id="colNameDessert" prefWidth="212.0" text="Name" />
+                              <TableColumn fx:id="colSizeDessert" minWidth="0.0" prefWidth="113.0" text="Size" />
+                              <TableColumn fx:id="colQtyOnHandDessert" minWidth="0.0" prefWidth="97.0" text="QTY_On_Hand" />
+                              <TableColumn fx:id="colPricedessert" minWidth="0.0" prefWidth="159.0" text="Price" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </HBox>
+                  <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="649.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/search.png" />
+                     </image>
+                  </ImageView>
+                  <JFXTextField fx:id="txtSearchDessert" layoutX="522.0" layoutY="33.0" onAction="#txtSearchDessertOnaction" style="-fx-text-inner-color: #b2c1d9;" stylesheets="@../assets/css/Cashier.css" />
+                  <HBox layoutX="57.0" layoutY="103.0" prefHeight="43.0" prefWidth="346.0" spacing="40.0">
+                     <children>
+                        <JFXRadioButton fx:id="radioAllDessert" onAction="#radioAllDessertOnAction" text="All" textFill="#e7e5e5">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="FoodSelection2" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton fx:id="radioIceCream" onAction="#radioIceCreamOnAction" text="Ice Cream" textFill="#e7e5e5" toggleGroup="$FoodSelection2" />
+                        <JFXRadioButton fx:id="radioPudding" onAction="#radioPuddingOnAction" text="Pudding" textFill="#e7e5e5" toggleGroup="$FoodSelection2" />
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+         </children>
+      </StackPane>
+      <Pane layoutX="931.0" prefHeight="768.0" prefWidth="434.0" style="-fx-background-color: #02030A;">
+         <children>
+            <Pane layoutX="-14.0" prefHeight="161.0" prefWidth="445.0" style="-fx-background-color: #02030A;">
+               <children>
+                  <JFXTextField fx:id="txtPhoeNumber" layoutX="11.0" layoutY="57.0" onKeyReleased="#txtPhoeNumberOnKeyReleased" promptText="Phone Number" style="-fx-text-inner-color: #b2c1d9; -fx-prompt-text-fill: #b2c1d9;" stylesheets="@../assets/css/Cashier.css" />
+                  <JFXTextField fx:id="txtName" layoutX="11.0" layoutY="91.0" onKeyPressed="#txtNameKeyPressed" promptText="Name" style="-fx-text-inner-color: #b2c1d9; -fx-prompt-text-fill: #b2c1d9;" stylesheets="@../assets/css/Cashier.css" />
+                  <JFXTextArea fx:id="textAddress" layoutX="193.0" layoutY="18.0" onKeyPressed="#textAddressOnkeyPressed" prefHeight="50.0" prefWidth="135.0" promptText="Address" style="-fx-text-fill: #b2c1d9; -fx-prompt-text-fill: #b2c1d9;" />
+                  <JFXComboBox fx:id="comboOrdertype" layoutX="11.0" layoutY="19.0" promptText="Order Type" style="-fx-prompt-text-fill: #b2c1d9;" stylesheets="@../assets/css/Cashier.css" />
+                  <HBox layoutX="314.0" layoutY="130.0" spacing="10.0">
+                     <children>
+                        <Label text="Net Total     " textFill="#e7e5e5" />
+                        <Label fx:id="lblTotal" text="0.00" textFill="#6eadff">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label layoutX="343.0" layoutY="15.0" prefHeight="17.0" prefWidth="43.0" text="Date :" textFill="#e7e5e5" />
+                  <Label fx:id="lblDate" layoutX="380.0" layoutY="15.0" textFill="#6eadff" />
+                  <JFXComboBox fx:id="comboQty" layoutX="207.0" layoutY="125.0" prefHeight="25.0" prefWidth="56.0" promptText="QTY" stylesheets="@../assets/css/Cashier.css" />
+                  <Label layoutX="153.0" layoutY="129.0" text="Btn Qty" textFill="#299e35" />
+                  <HBox layoutX="314.0" layoutY="104.0" spacing="10.0">
+                     <children>
+                        <Label text="Order Id       " textFill="#e7e5e5" />
+                        <Label fx:id="lblOrderId" textFill="#6eadff">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <JFXComboBox fx:id="comboGenderCashier" layoutX="11.0" layoutY="125.0" prefHeight="25.0" prefWidth="80.0" promptText="Gender" style="-fx-prompt-text-fill: #b2c1d9;" stylesheets="@../assets/css/Cashier.css" />
+                  <HBox layoutX="314.0" layoutY="82.0" spacing="10.0">
+                     <children>
+                        <Label text="Customer Id " textFill="#e7e5e5" />
+                        <Label fx:id="lblCustomerId" textFill="#6eadff" />
+                     </children>
+                  </HBox>
+                  <JFXTextField fx:id="txtCustomerCash" layoutX="195.0" layoutY="92.0" prefHeight="25.0" prefWidth="80.0" promptText="Customer Cash" style="-fx-text-inner-color: #b2c1d9; -fx-prompt-text-fill: #b2c1d9;" stylesheets="@../assets/css/Cashier.css" />
+               </children>
+            </Pane>
+            <TableView fx:id="orderTable" layoutX="-8.0" layoutY="163.0" prefHeight="528.0" prefWidth="445.0" stylesheets="@../assets/css/Cashier.css">
+              <columns>
+                  <TableColumn fx:id="colSizeOrder" editable="false" prefWidth="59.0" text="Size" />
+                  <TableColumn fx:id="colCodeOrder" editable="false" prefWidth="50.0" text="Code" />
+                <TableColumn fx:id="colNameOrder" editable="false" prefWidth="101.0" text="Name" />
+                <TableColumn fx:id="colQtyOrder" editable="false" prefWidth="34.0" text="QTY" />
+                  <TableColumn fx:id="colPriceOrder" editable="false" prefWidth="72.0" text="Price" />
+                  <TableColumn fx:id="colTotalOrder" editable="false" prefWidth="57.0" text="Total" />
+                  <TableColumn fx:id="colActionOrder" editable="false" prefWidth="24.0" text="-" />
+                  <TableColumn fx:id="colPlus" editable="false" prefWidth="47.0" text="+" />
+              </columns>
+            </TableView>
+            <JFXButton fx:id="placeOrderBtn" layoutX="333.0" layoutY="716.0" onAction="#placeOrderBtnOnAction" prefHeight="43.0" prefWidth="87.0" style="-fx-background-color: #40826d;" text="Place Order" />
+            <Label fx:id="lblWarning" layoutX="110.0" layoutY="715.0" prefHeight="17.0" prefWidth="117.0" textFill="#ff3030">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+   <effect>
+      <DropShadow color="#1b1eeb" />
+   </effect>
+</AnchorPane>
