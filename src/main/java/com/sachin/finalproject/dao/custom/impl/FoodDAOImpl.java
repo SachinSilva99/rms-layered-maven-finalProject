@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class FooDAOImpl implements FoodDAO {
+public class FoodDAOImpl implements FoodDAO {
     private Connection connection;
 
-    public FooDAOImpl(Connection connection) {
+    public FoodDAOImpl(Connection connection) {
         this.connection = connection;
     }
 
