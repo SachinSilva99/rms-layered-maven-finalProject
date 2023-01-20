@@ -77,4 +77,10 @@ public class CustomerServiceImpl implements CustomerService {
             throw new InUseException("customer in use");
         }
     }
+
+    @Override
+    public CustomerDTO updateCustomer(CustomerDTO customerDTO) throws NotFoundException {
+        if(!customerDAO.existByPk(customerDTO.getId()))throw  new NotFoundException("Customer not found");
+        return converter.fromCustomer(customerDAO.update(converter.toCustomer(customerDTO)));
+    }
 }
