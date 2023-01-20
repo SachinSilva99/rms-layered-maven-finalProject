@@ -142,4 +142,18 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         return customers;
     }
+
+    @Override
+    public Optional<String> getLastCustomerId() {
+        try {
+            ResultSet rst = CrudUtil.execute("SELECT * FROM Customer ORDER BY id DESC LIMIT 1");
+            if(rst.next()){
+                return Optional.of(rst.getString(4));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

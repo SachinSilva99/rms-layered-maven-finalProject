@@ -16,7 +16,7 @@ public class DBConnection {
             throw new RuntimeException(e);
         }
     }
-    public static DBConnection getInstance() throws SQLException, ClassNotFoundException {
+    public static DBConnection getInstance(){
         return (null == dbConnection) ? dbConnection = new DBConnection() : dbConnection;
     }
     public Connection getConnection() {

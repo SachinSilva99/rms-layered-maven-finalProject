@@ -751,7 +751,7 @@ public class CashierFormController {
                 }
             }
             if (!existsC) {
-                String currentId = CustomerModel.getCurrentCustomer();
+                String currentId = CustomerModel.getCurrentCustomer();//lastCustomerId
                 String s = CustomerModel.generateCustomerId("C", currentId);
 
                 lblCustomerId.setText(s);
