@@ -37,8 +37,6 @@ public class LoginFormController {
     }
 
 
-
-
     private void close(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Stage stagee = (Stage) source.getScene().getWindow();
@@ -95,9 +93,11 @@ public class LoginFormController {
                     close(actionEvent);
 
                     Stage stage = new Stage();
-                    Parent root = FXMLLoader.load(getClass().getResource("/com.sachin.finalproject/view/CashierForm.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com.sachin.finalproject/view/AdminForm.fxml"));
+                    System.out.println("Eroor here");
+                    Parent root = loader.load();
                     stage.setScene(new Scene(root));
-                    show(stage, root);
+                    stage.show();
                     new Alert(Alert.AlertType.INFORMATION, "Admin Login Success").show();
                 }
             }else{

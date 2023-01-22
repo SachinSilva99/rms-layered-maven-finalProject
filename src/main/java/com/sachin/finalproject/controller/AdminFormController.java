@@ -1,5 +1,6 @@
 package com.sachin.finalproject.controller;
 
+
 import com.jfoenix.controls.*;
 import com.sachin.finalproject.db.DBConnection;
 import com.sachin.finalproject.model.*;
@@ -26,7 +27,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.controlsfx.control.textfield.TextFields;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,9 +51,9 @@ public class AdminFormController {
     public JFXTextField txtId;
     public JFXTextField txtPhoneNumberC;
     public TableView <CustomerTM> customerTbl;
-    public JFXComboBox <String> subCategoryS;
+    public JFXComboBox<String> subCategoryS;
     public JFXComboBox <String> comboCategoryS;
-    public JFXComboBox <String> comboNameS;
+    public JFXComboBox<String> comboNameS;
     public JFXTextField txtQtyS;
 
     public Label lblId;
@@ -810,7 +810,7 @@ public class AdminFormController {
             }
             String[] idsAr = ids.toArray(new String[ids.size()]);
 
-            TextFields.bindAutoCompletion(txtIdS, idsAr);
+            //TextFields.bindAutoCompletion(txtIdS, idsAr);
 
             item = StockModel.getItem(id);
         } catch (SQLException | ClassNotFoundException | RuntimeException e) {

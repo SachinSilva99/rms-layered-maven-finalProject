@@ -18,7 +18,7 @@ public class CrudUtil {
                  return (T)pstm.executeQuery();
              }
              return (T)((Boolean)(pstm.executeUpdate() > 0));   // convert boolean to Boolean(Boxing type)
-         } catch (SQLException | ClassNotFoundException e) {
+         } catch (SQLException  e) {
              throw new RuntimeException(e);
          }
      }
