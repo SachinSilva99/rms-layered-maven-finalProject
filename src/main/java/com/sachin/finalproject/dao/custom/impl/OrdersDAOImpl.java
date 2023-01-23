@@ -110,6 +110,7 @@ public class OrdersDAOImpl implements OrdersDAO {
         return 0;
     }
 
+
     private static ArrayList<Orders> getOrders(ResultSet rs, ArrayList<Orders> orders) throws SQLException {
         while (rs.next()) {
             String id = rs.getString("id");
@@ -121,5 +122,18 @@ public class OrdersDAOImpl implements OrdersDAO {
             orders.add(order);
         }
         return orders;
+    }
+
+    @Override
+    public Optional<String> getLastOrderId() {
+        try {
+            ResultSet rst = CrudUtil.execute("SELECT  * FROM orders ORDER BY id DESC LIMIT 1");
+            if (rst.next()) {
+                return Optional.ofNullable(rst.getString(1));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

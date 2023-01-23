@@ -139,4 +139,40 @@ public class ItemDAOImpl implements ItemDAO {
         }
         return items;
     }
+
+    @Override
+    public List<Item> getFoodCategoryAll() {
+        ResultSet rst = CrudUtil.execute("SELECT * FROM item WHERE category = 'food'");
+        try {
+            return getItems(rst);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Item> getFoodSubcategoryCategory(String category,String subCategory) {
+        ResultSet rs = CrudUtil.execute("SELECT * FROM item WHERE category = ? AND subcategory = ?", category, subCategory);
+        try {
+            return getItems(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Item> getFoodOnlyCategory(String category) {
+        ResultSet rs = CrudUtil.execute("SELECT * FROM item WHERE category = ?", category);
+        try {
+            return getItems(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean updateQty(int newRemainingQty, String itemId) {
+        String  sql = "UPDATE item SET `qtyOnHand` = ? WHERE `id` = ?";
+        return CrudUtil.execute(sql, newRemainingQty, itemId);
+    }
 }
