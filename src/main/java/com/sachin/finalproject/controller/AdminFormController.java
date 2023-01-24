@@ -311,6 +311,8 @@ public class AdminFormController {
                     try {
                         es.deleteEmployee(selectedE.getNic());
                         new Alert(Alert.AlertType.INFORMATION, "Employee Deleted").show();
+                        setEmployeeTable();
+                        employeeTbl.refresh();
 
                     } catch (ConstraintViolationException e) {
                         new Alert(Alert.AlertType.ERROR, "Employee in use").show();
@@ -334,7 +336,6 @@ public class AdminFormController {
         colRoleE.setCellValueFactory(new PropertyValueFactory<>("role"));
         colDelE.setCellValueFactory(new PropertyValueFactory<>("button"));
         employeeTbl.setItems(employeesTm);
-
     }
 
     @FXML
