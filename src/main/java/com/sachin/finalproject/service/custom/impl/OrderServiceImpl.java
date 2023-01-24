@@ -3,12 +3,17 @@ package com.sachin.finalproject.service.custom.impl;
 import com.sachin.finalproject.dao.CrudDAO;
 import com.sachin.finalproject.dao.DaoFactory;
 import com.sachin.finalproject.dao.DaoType;
+import com.sachin.finalproject.dao.custom.ItemDAO;
 import com.sachin.finalproject.dao.custom.OrderDetailDAO;
 import com.sachin.finalproject.dao.custom.OrdersDAO;
 import com.sachin.finalproject.db.DBConnection;
 import com.sachin.finalproject.dto.OrderDetailDTO;
 import com.sachin.finalproject.dto.OrdersDTO;
+import com.sachin.finalproject.entity.Item;
 import com.sachin.finalproject.entity.Orders;
+import com.sachin.finalproject.service.ServiceFactory;
+import com.sachin.finalproject.service.ServiceType;
+import com.sachin.finalproject.service.custom.ItemService;
 import com.sachin.finalproject.service.custom.OrderService;
 import com.sachin.finalproject.service.util.Converter;
 
@@ -18,13 +23,18 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class OrderServiceImpl implements OrderService {
+    private final ItemService itemService = ServiceFactory.getInstance().getService(ServiceType.ITEM);
     private final OrdersDAO ordersDAO ;
     private final OrderDetailDAO orderDetailDAO ;
     private final Connection connection;
+    private final ItemDAO itemDAO ;
+
     private final Converter converter;
 
     public OrderServiceImpl() {
         this.connection = DBConnection.getInstance().getConnection();
+        this.itemDAO = DaoFactory.getInstance().getDao(connection, DaoType.ITEM);
+
         this.ordersDAO = DaoFactory.getInstance().getDao(connection, DaoType.ORDERS);
         this.orderDetailDAO = DaoFactory.getInstance().getDao(connection, DaoType.ORDER_DETAIL);
 
@@ -54,6 +64,11 @@ public class OrderServiceImpl implements OrderService {
             Orders save = ordersDAO.save(converter.toOrders(ordersDTO));
             for (OrderDetailDTO od : orderDetailDTOS) {
                 orderDetailDAO.save(converter.toOrderDetail(od));
+                Optional<Item> itemOptional = itemDAO.findByPk(od.getItemID());
+                Item item = itemOptional.get();
+                int qtyOnHand = item.getQtyOnHand();
+                int qty = od.getQty();
+                itemService.updateQty(qtyOnHand - qty,od.getItemID());
             }
             connection.commit();
         } catch (Exception e) {

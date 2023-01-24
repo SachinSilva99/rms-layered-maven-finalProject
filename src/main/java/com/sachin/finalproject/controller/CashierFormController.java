@@ -891,6 +891,7 @@ public class CashierFormController {
                 txtPhoeNumber.setText("");
                 txtName.setText("");
                 textAddress.setText("");
+                txtCustomerCash.setText("");
                 String orderID = lblOrderId.getText();
 
                 String d = os.generateId(orderID);
