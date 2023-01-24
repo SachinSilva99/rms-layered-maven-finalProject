@@ -46,7 +46,6 @@ public class SalaryModel {
             s.setStatus("Paid");
             salaries.add(s);
         }
-
         return salaries;
     }
 }

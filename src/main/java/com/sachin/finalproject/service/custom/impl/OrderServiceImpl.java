@@ -39,7 +39,6 @@ public class OrderServiceImpl implements OrderService {
             addId++;
             return String.format("C" + "%05d", addId);
         }
-
         return "D" + "00000";
     }
 

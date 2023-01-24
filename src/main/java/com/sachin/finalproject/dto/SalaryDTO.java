@@ -10,6 +10,7 @@ public class SalaryDTO implements SuperDTO{
     private LocalDate month;
     private LocalDate date;
     private  String status;
+    private int id;
 
     public SalaryDTO() {
     }
@@ -21,6 +22,15 @@ public class SalaryDTO implements SuperDTO{
         this.date = date;
         this.status = status;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getEnic() {
         return enic;
     }

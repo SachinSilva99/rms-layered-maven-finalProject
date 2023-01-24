@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,7 @@ public class SalaryDAOImpl implements SalaryDAO {
     }
 
     @Override
-    public void deleteByPk(String pk) throws ConstraintViolationException {
+    public void deleteByPk(Integer pk) throws ConstraintViolationException {
         boolean isDeleted = CrudUtil.execute("DELETE FROM  salary WHERE salaryId = ?", pk);
         if (!isDeleted) try {
             throw new SQLException("Failed to delete salary");
@@ -98,7 +99,7 @@ public class SalaryDAOImpl implements SalaryDAO {
     }
 
     @Override
-    public Optional<Salary> findByPk(String pk) {
+    public Optional<Salary> findByPk(Integer pk) {
         try {
             ResultSet rs = CrudUtil.execute("SELECT * FROM salary WHERE salaryId = ?", pk);
             ArrayList<Salary> salaries = getSalaries(rs, new ArrayList<>());
@@ -112,7 +113,7 @@ public class SalaryDAOImpl implements SalaryDAO {
     }
 
     @Override
-    public boolean existByPk(String pk) {
+    public boolean existByPk(Integer pk) {
         ResultSet rs = CrudUtil.execute("SELECT * FROM salary WHERE salaryId = ?", pk);
         try {
             return rs.next();
@@ -130,5 +131,31 @@ public class SalaryDAOImpl implements SalaryDAO {
             throw new RuntimeException("failed to load salary count");
         }
         return 0;
+    }
+
+    @Override
+    public List<Salary> getAllByDate(int month, int year) {
+        try {
+            ResultSet rst =  CrudUtil.execute("SELECT * FROM salary WHERE month(month) = ? AND year(month) = ?", month, year);
+            ArrayList <Salary> salaries = new ArrayList <>();
+
+            while(rst.next()){
+                Salary s = new Salary();
+                s.setEnic(rst.getString(1));
+                s.setName(rst.getString(2));
+                s.setSalary(rst.getDouble(3));
+                LocalDate monthh = rst.getDate(4).toLocalDate();
+                s.setMonth(monthh);
+                LocalDate date = rst.getDate(5).toLocalDate();
+                s.setDate(date);
+                s.setStatus("Paid");
+                s.setId(rst.getInt(7));
+                salaries.add(s);
+            }
+            return salaries;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

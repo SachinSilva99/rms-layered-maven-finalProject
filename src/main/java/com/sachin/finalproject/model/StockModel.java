@@ -79,6 +79,4 @@ public class StockModel {
         }
         return items;
     }
-
-
 }

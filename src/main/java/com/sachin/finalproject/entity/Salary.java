@@ -9,6 +9,7 @@ public class Salary implements SuperEntity{
     private LocalDate month;
     private LocalDate date;
     private  String status;
+    private int id;
 
     public Salary() {
     }
@@ -20,6 +21,15 @@ public class Salary implements SuperEntity{
         this.date = date;
         this.status = status;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getEnic() {
         return enic;
     }
