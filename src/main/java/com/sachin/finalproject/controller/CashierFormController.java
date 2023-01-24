@@ -2,11 +2,16 @@ package com.sachin.finalproject.controller;
 
 import com.jfoenix.controls.*;
 import com.sachin.finalproject.db.DBConnection;
-import com.sachin.finalproject.model.*;
+//import com.sachin.finalproject.model.*;
+import com.sachin.finalproject.dto.CustomerDTO;
+import com.sachin.finalproject.dto.ItemDTO;
+import com.sachin.finalproject.dto.OrderDetailDTO;
+import com.sachin.finalproject.dto.OrdersDTO;
 import com.sachin.finalproject.regex.Validation;
 import com.sachin.finalproject.regex.Validates;
-import com.sachin.finalproject.to.Customer;
-import com.sachin.finalproject.to.Item;
+import com.sachin.finalproject.service.ServiceFactory;
+import com.sachin.finalproject.service.ServiceType;
+import com.sachin.finalproject.service.custom.*;
 import com.sachin.finalproject.to.OrderTm;
 import com.sachin.finalproject.to.User;
 import javafx.collections.FXCollections;
@@ -43,9 +48,20 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 public class CashierFormController {
+    private final CustomerService cs = ServiceFactory.getInstance().getService(ServiceType.CUSTOMER);
+    private final EmployeeService es = ServiceFactory.getInstance().getService(ServiceType.EMPLOYEE);
+    private final ItemService is = ServiceFactory.getInstance().getService(ServiceType.ITEM);
+    private final SalaryService salaryS = ServiceFactory.getInstance().getService(ServiceType.SALARY);
+    private final StockService stockS = ServiceFactory.getInstance().getService(ServiceType.STOCK);
+    private final UserService us = ServiceFactory.getInstance().getService(ServiceType.USER);
+    private final OrderService os = ServiceFactory.getInstance().getService(ServiceType.ORDER);
+
     private double x, y;
     private User user;
     private Image image;
@@ -92,7 +108,7 @@ public class CashierFormController {
     private Pane foodPnl;
 
     @FXML
-    private TableView<Item> foodTbl;
+    private TableView<ItemDTO> foodTbl;
 
     @FXML
     private TableColumn<?, ?> colCodeFood;
@@ -128,7 +144,7 @@ public class CashierFormController {
     private Pane drinkPnl;
 
     @FXML
-    private TableView<Item> drinkTbl;
+    private TableView<ItemDTO> drinkTbl;
 
     @FXML
     private TableColumn<?, ?> colCodeDrink;
@@ -164,7 +180,7 @@ public class CashierFormController {
     private Pane dessertPnl;
 
     @FXML
-    private TableView<Item> dessertTbl;
+    private TableView<ItemDTO> dessertTbl;
 
     @FXML
     private TableColumn<?, ?> colCodeDessert;
@@ -233,12 +249,12 @@ public class CashierFormController {
         gender.add("Other");
         gender.add("Male");
         comboGenderCashier.setItems(gender);
-        String orderId = PlaceOrderModel.getOrderId();
-        if (orderId == null) {
+        String orderId = os.getOrderId().get();
+        if (orderId.isEmpty()) {
             orderId = "D00001";
             lblOrderId.setText(orderId);
         } else {
-            String s = PlaceOrderModel.generateId("D", orderId);
+            String s = os.generateId(orderId);
             lblOrderId.setText(s);
         }
 
@@ -275,8 +291,8 @@ public class CashierFormController {
 
         foodtbSet();
 
-        ArrayList<Item> food = ItemModel.getFood();
-        ObservableList<Item> items = FXCollections.observableArrayList(food);
+        ArrayList<ItemDTO> food = (ArrayList<ItemDTO>) is.getAllItem("food");
+        ObservableList<ItemDTO> items = FXCollections.observableArrayList(food);
         foodTbl.setItems(items);
 
     }
@@ -295,8 +311,8 @@ public class CashierFormController {
 
         foodtbSet();
 
-        ArrayList<Item> food = ItemModel.getFood("food", "rice");
-        ObservableList<Item> items = FXCollections.observableArrayList(food);
+        ArrayList<ItemDTO> food = (ArrayList<ItemDTO>) is.getAllItem("food","rice");
+        ObservableList<ItemDTO> items = FXCollections.observableArrayList(food);
         foodTbl.setItems(items);
 
     }
@@ -304,8 +320,8 @@ public class CashierFormController {
     public void setFoodPizza() throws SQLException, ClassNotFoundException {
         foodTbl.getItems().clear();
         foodtbSet();
-        ArrayList<Item> food = ItemModel.getFood("food", "pizza");
-        ObservableList<Item> items = FXCollections.observableArrayList(food);
+        ArrayList<ItemDTO> food = (ArrayList<ItemDTO>) is.getAllItem("food","pizza");
+        ObservableList<ItemDTO> items = FXCollections.observableArrayList(food);
         foodTbl.setItems(items);
 
     }
@@ -407,8 +423,8 @@ public class CashierFormController {
         drinkTbl.getItems().clear();
 
         drinkTbSet();
-        ArrayList<Item> drinks = ItemModel.getDrink();
-        ObservableList<Item> items = FXCollections.observableArrayList(drinks);
+        ArrayList<ItemDTO> drinks = (ArrayList<ItemDTO>) is.getAllItem("drink");
+        ObservableList<ItemDTO> items = FXCollections.observableArrayList(drinks);
         drinkTbl.setItems(items);
 
     }
@@ -425,8 +441,8 @@ public class CashierFormController {
     public void setSoftDrink() throws SQLException, ClassNotFoundException {
         drinkTbl.getItems().clear();
         drinkTbSet();
-        ArrayList<Item> drinks = ItemModel.getDrinkSoft("drink", "soft drink");
-        ObservableList<Item> items = FXCollections.observableArrayList(drinks);
+        ArrayList<ItemDTO> drinks = (ArrayList<ItemDTO>) is.getAllItem("drink", "soft drink");
+        ObservableList<ItemDTO> items = FXCollections.observableArrayList(drinks);
         drinkTbl.setItems(items);
 
     }
@@ -434,8 +450,8 @@ public class CashierFormController {
     public void setHotDrink() throws SQLException, ClassNotFoundException {
         drinkTbl.getItems().clear();
         drinkTbSet();
-        ArrayList<Item> drinks = ItemModel.getDrinkHot("drink", "hot drink");
-        ObservableList<Item> items = FXCollections.observableArrayList(drinks);
+        ArrayList<ItemDTO> drinks = (ArrayList<ItemDTO>) is.getAllItem("drink", "hot drink");
+        ObservableList<ItemDTO> items = FXCollections.observableArrayList(drinks);
         drinkTbl.setItems(items);
 
     }
@@ -478,8 +494,8 @@ public class CashierFormController {
     private void setDessertAll() throws SQLException, ClassNotFoundException {
         dessertTbl.getItems().clear();
         dessertTbSet();
-        ArrayList<Item> dessertAll = ItemModel.getDessertAll();
-        ObservableList<Item> items = FXCollections.observableArrayList(dessertAll);
+        ArrayList<ItemDTO> dessertAll = (ArrayList<ItemDTO>) is.getAllItem("dessert");
+        ObservableList<ItemDTO> items = FXCollections.observableArrayList(dessertAll);
         dessertTbl.setItems(items);
     }
 
@@ -495,8 +511,8 @@ public class CashierFormController {
     public void setIceCream() throws SQLException, ClassNotFoundException {
         dessertTbl.getItems().clear();
         dessertTbSet();
-        ArrayList<Item> dessert = ItemModel.getDessertIceCream("dessert", "ice cream");
-        ObservableList<Item> items = FXCollections.observableArrayList(dessert);
+        ArrayList<ItemDTO> dessert = (ArrayList<ItemDTO>) is.getAllItem("dessert","ice cream");
+        ObservableList<ItemDTO> items = FXCollections.observableArrayList(dessert);
         dessertTbl.setItems(items);
 
     }
@@ -504,8 +520,8 @@ public class CashierFormController {
     public void setPudding() throws SQLException, ClassNotFoundException {
         dessertTbl.getItems().clear();
         dessertTbSet();
-        ArrayList<Item> dessert = ItemModel.getDessertPudding("dessert", "pudding");
-        ObservableList<Item> items = FXCollections.observableArrayList(dessert);
+        ArrayList<ItemDTO> dessert = (ArrayList<ItemDTO>) is.getAllItem("dessert","pudding");
+        ObservableList<ItemDTO> items = FXCollections.observableArrayList(dessert);
         dessertTbl.setItems(items);
 
     }
@@ -543,32 +559,31 @@ public class CashierFormController {
     }
 
     public void txtSearchFood(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        ArrayList<Item> items = ItemModel.search(txtSearchFood.getText().toLowerCase());
+        ArrayList<ItemDTO> items = (ArrayList<ItemDTO>) is.searchItem(txtSearchFood.getText().toLowerCase(),"food");
         foodTbl.getItems().clear();
         foodtbSet();
-        ObservableList<Item> observableList = FXCollections.observableArrayList(items);
+        ObservableList<ItemDTO> observableList = FXCollections.observableArrayList(items);
         foodTbl.setItems(observableList);
     }
 
     public void textSearchDrinkOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        ArrayList<Item> items = ItemModel.drinksearch(textSearchDrink.getText().toLowerCase());
+        ArrayList<ItemDTO> items = (ArrayList<ItemDTO>) is.searchItem(txtSearchFood.getText().toLowerCase(),"drink");
         drinkTbl.getItems().clear();
 //            textSearchDrink
         drinkTbSet();
 
-        ObservableList<Item> observableList = FXCollections.observableArrayList(items);
+        ObservableList<ItemDTO> observableList = FXCollections.observableArrayList(items);
         drinkTbl.setItems(observableList);
     }
 
     public void txtSearchDessertOnaction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        ArrayList<Item> items = ItemModel.dessertsearch(txtSearchDessert.getText().toLowerCase());
-        ArrayList<Item> item = new ArrayList<>();
+        ArrayList<ItemDTO> items = (ArrayList<ItemDTO>) is.searchItem(txtSearchFood.getText().toLowerCase(),"dessert");
 
         dessertTbl.getItems().clear();
 //            textSearchDrink
         dessertTbSet();
 
-        ObservableList<Item> observableList = FXCollections.observableArrayList(items);
+        ObservableList<ItemDTO> observableList = FXCollections.observableArrayList(items);
         dessertTbl.setItems(observableList);
     }
 
@@ -590,10 +605,10 @@ public class CashierFormController {
     }
 
     private void clickOnTable(TableView t) {
-        TableView.TableViewSelectionModel<Item> food = t.getSelectionModel();
+        TableView.TableViewSelectionModel<ItemDTO> food = t.getSelectionModel();
         total = Double.parseDouble(lblTotal.getText());
         int focusedIndex = food.getFocusedIndex();
-        ObservableList<Item> items = t.getItems();
+        ObservableList<ItemDTO> items = t.getItems();
         for (OrderTm o : orders) {
             if (items.get(focusedIndex).getId().equals(o.getCode())) {
                 int qty = o.getQty();
@@ -739,21 +754,20 @@ public class CashierFormController {
             nameValidated = false;
             lblWarning.setText("Check details again!");
             txtName.setStyle("-jfx-focus-color : red");
-            ArrayList<Customer> allC = null;
+            ArrayList<CustomerDTO> allC = null;
 
-            allC = CustomerModel.getAllCustomers();
+            allC = (ArrayList<CustomerDTO>) cs.getAllCustomer();
 
             boolean existsC = false;
-            for (Customer c : allC) {
+            for (CustomerDTO c : allC) {
                 if (c.getPhoneNumber().equals(txtPhoeNumber.getText())) {
                     existsC = true;
                     break;
                 }
             }
             if (!existsC) {
-                String currentId = CustomerModel.getCurrentCustomer();//lastCustomerId
-                String s = CustomerModel.generateCustomerId("C", currentId);
-
+                String currentId = cs.getLastCustomer();//lastCustomerId
+                String s = cs.generateCustomerId("C",currentId);
                 lblCustomerId.setText(s);
             }
         } catch (Exception e) {
@@ -782,7 +796,7 @@ public class CashierFormController {
         try {
             String ph = txtPhoeNumber.getText();
 
-            Customer c = setCustomerExists(ph);
+            CustomerDTO c = setCustomerExists(ph);
             if (c != null) {
                 txtName.setText(c.getName());
                 comboGenderCashier.getSelectionModel().selectFirst();
@@ -814,14 +828,13 @@ public class CashierFormController {
         }
     }
 
-    private Customer setCustomerExists(String ph) throws SQLException, ClassNotFoundException {
-        ArrayList<Customer> allCustomers = CustomerModel.getAllCustomers();
-        for (Customer c : allCustomers) {
+    private CustomerDTO setCustomerExists(String ph) throws SQLException, ClassNotFoundException {
+        ArrayList<CustomerDTO> allCustomers = (ArrayList<CustomerDTO>) cs.getAllCustomer();
+        for (CustomerDTO c : allCustomers) {
             if (c.getPhoneNumber().equals(ph)) {
                 return c;
             }
         }
-
         return null;
     }
 
@@ -844,9 +857,9 @@ public class CashierFormController {
                     return;
                 }
             }
-            ArrayList<Customer> allC = CustomerModel.getAllCustomers();
+            ArrayList<CustomerDTO> allC = (ArrayList<CustomerDTO>) cs.getAllCustomer();
             boolean cExists = false;
-            for (Customer c : allC) {
+            for (CustomerDTO c : allC) {
                 if (lblCustomerId.getText().equals(c.getId())) {
                     cExists = true;
                     break;
@@ -859,37 +872,19 @@ public class CashierFormController {
                 String phoneN = txtPhoeNumber.getText();
                 String gender = comboGenderCashier.getSelectionModel().getSelectedItem();
                 String address = textAddress.getText();
-                CustomerModel.insertC(id, name, phoneN, gender, address);
+                cs.saveCustomer(new CustomerDTO(name,gender,address,id,phoneN));
             }
-            DBConnection.getInstance().getConnection().setAutoCommit(false);
-            boolean ordersAdded = PlaceOrderModel.intoOrders(orderId, lblDate.getText(), lblCustomerId.getText(), comboOrdertype.getSelectionModel().getSelectedItem());
             ObservableList<OrderTm> items = orderTable.getItems();
-            for (OrderTm i : items) {
-                String itemId = i.getCode();
-                int qty = i.getQty();
-                double price = i.getPrice();
-                Item item = ItemModel.getItem(itemId);
-                if (item != null) {
-                    int qtyOnHand = item.getQtyOnHand();
-                    int newRemainingQty = qtyOnHand - qty;
-                    if (newRemainingQty == 0) {
-                        ItemModel.deleteItem(itemId);
-                    } else {
-                        boolean isUpdated = ItemModel.updateQty(newRemainingQty, itemId);
-                    }
-                }
-                if (ordersAdded) {
-                    boolean orderDetailIsadded = PlaceOrderModel.intoOrderDetail(orderId, itemId, qty, price);
-                    if (!orderDetailIsadded) {
-                        new Alert(Alert.AlertType.CONFIRMATION, "Error").show();
-                        return;
-                    }
-                    DBConnection.getInstance().getConnection().commit();
-                } else {
-                    DBConnection.getInstance().getConnection().rollback();
-                }
-
-            }
+            List<OrderDetailDTO> orderDetails = items.stream().map(orderTm -> new OrderDetailDTO(
+                    orderId,
+                    orderTm.getCode(),
+                    orderTm.getQty(),
+                    orderTm.getPrice()
+            )).collect(Collectors.toList());
+            String orderType = comboOrdertype.getSelectionModel().getSelectedItem();
+            System.out.println(lblCustomerId.getText());
+            OrdersDTO ordersDTO = new OrdersDTO(orderId, LocalDate.now(), lblCustomerId.getText(), orderType);
+            boolean ordersAdded = os.placeOrder(ordersDTO, (ArrayList<OrderDetailDTO>) orderDetails);
             if (ordersAdded) {
                 double customerCash = Double.parseDouble(txtCustomerCash.getText());
                 double total = Double.parseDouble(lblTotal.getText());
@@ -904,7 +899,8 @@ public class CashierFormController {
                 txtName.setText("");
                 textAddress.setText("");
                 String orderID = lblOrderId.getText();
-                String d = PlaceOrderModel.generateId("D", orderID);
+
+                String d = os.generateId(orderID);
                 lblOrderId.setText(d);
                 orderTms.clear();
                 orders.clear();
@@ -950,7 +946,7 @@ public class CashierFormController {
             //JasperPrintManager.printReport(JasperPrint, true); // true = ask to print or not, false = direct print
             JasperViewer.viewReport(jasperPrint);
         } catch (Exception e) {
-            System.out.println(e);
+            throw new RuntimeException(e);
         }
     }
 

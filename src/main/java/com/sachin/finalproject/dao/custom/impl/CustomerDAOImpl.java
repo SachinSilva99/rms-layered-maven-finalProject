@@ -154,6 +154,5 @@ public class CustomerDAOImpl implements CustomerDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

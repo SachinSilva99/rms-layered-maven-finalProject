@@ -21,7 +21,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
 
     @Override
     public OrderDetail save(OrderDetail od) throws ConstraintViolationException {
-        boolean isSaved = CrudUtil.execute("INSERT INTO orderdetail VALUES (orderId,itemID,qty,unitPrice)",
+        boolean isSaved = CrudUtil.execute("INSERT INTO orderdetail VALUES (?,?,?,?)",
                 od.getOrderId(),
                 od.getItemID(),
                 od.getQty(),

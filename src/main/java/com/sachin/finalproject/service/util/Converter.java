@@ -7,12 +7,12 @@ import com.sachin.finalproject.entity.*;
 public class Converter {
     public Customer toCustomer(CustomerDTO cd){
         return new Customer(
-                cd.getName(),cd.getGender(),cd.getAddress(), cd.getAddress(),cd.getPhoneNumber()
+                cd.getName(),cd.getGender(),cd.getAddress(), cd.getId(),cd.getPhoneNumber()
         );
     }
     public CustomerDTO fromCustomer(Customer c){
         return new CustomerDTO(
-                c.getName(),c.getGender(),c.getAddress(), c.getAddress(),c.getPhoneNumber()
+                c.getName(),c.getGender(),c.getAddress(), c.getId(),c.getPhoneNumber()
         );
     }
     public Employee toEmployee(EmployeeDTO ed){
