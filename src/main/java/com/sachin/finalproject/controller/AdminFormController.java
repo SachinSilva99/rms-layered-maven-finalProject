@@ -4,19 +4,15 @@ package com.sachin.finalproject.controller;
 import com.jfoenix.controls.*;
 import com.sachin.finalproject.dao.exception.ConstraintViolationException;
 import com.sachin.finalproject.db.DBConnection;
-import com.sachin.finalproject.dto.CustomerDTO;
-import com.sachin.finalproject.dto.EmployeeDTO;
-import com.sachin.finalproject.dto.ItemDTO;
-import com.sachin.finalproject.dto.SalaryDTO;
-import com.sachin.finalproject.model.EmployeeModel;
+import com.sachin.finalproject.dto.*;
 import com.sachin.finalproject.regex.Validation;
 import com.sachin.finalproject.regex.Validates;
 import com.sachin.finalproject.service.ServiceFactory;
 import com.sachin.finalproject.service.ServiceType;
 import com.sachin.finalproject.service.custom.*;
+import com.sachin.finalproject.service.exception.DuplicateException;
 import com.sachin.finalproject.service.exception.InUseException;
 import com.sachin.finalproject.service.exception.NotFoundException;
-import com.sachin.finalproject.to.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -68,7 +64,7 @@ public class AdminFormController {
     public JFXButton btnUpdateC;
     public JFXTextField txtId;
     public JFXTextField txtPhoneNumberC;
-    public TableView<CustomerTM> customerTbl;
+    public TableView<CustomerTMDTO> customerTbl;
     public JFXComboBox<String> subCategoryS;
     public JFXComboBox<String> comboCategoryS;
     public JFXComboBox<String> comboNameS;
@@ -419,14 +415,14 @@ public class AdminFormController {
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
         try {
-            boolean isUpdated = EmployeeModel.update(getEmployee());
-            if (isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Employee Updated Successfully!").show();
-                setEmployeeTable();
-                employeeTbl.refresh();
-                warningE.setText("");
-            }
-        } catch (SQLException | ClassNotFoundException | InputMismatchException | NullPointerException |
+            es.updateEmployee(getEmployee());
+
+            new Alert(Alert.AlertType.CONFIRMATION, "Employee Updated Successfully!").show();
+            setEmployeeTable();
+            employeeTbl.refresh();
+            warningE.setText("");
+
+        } catch (InputMismatchException | NullPointerException |
                  NumberFormatException e) {
             warningE.setText("Check Details again");
             System.out.println(e);
@@ -435,27 +431,25 @@ public class AdminFormController {
 
     public void btnRegisterOnAction(ActionEvent actionEvent) {
         try {
-            Employee e = getEmployee();
+            EmployeeDTO e = getEmployee();
 
-            boolean isAdded = EmployeeModel.insertEmployee(e);
-            if ((isAdded)) {
-                setEmployeeTable();
-                employeeTbl.refresh();
-                new Alert(Alert.AlertType.CONFIRMATION, "Employee Added").show();
-                warningE.setText("");
-                return;
-            }
-            new Alert(Alert.AlertType.ERROR, "Not Added").show();
+            es.saveEmployee(e);
+            setEmployeeTable();
+            employeeTbl.refresh();
+            new Alert(Alert.AlertType.CONFIRMATION, "Employee Added").show();
+            warningE.setText("");
 
-        } catch (SQLException | NullPointerException | ClassNotFoundException | InputMismatchException |
-                 NumberFormatException ex) {
+        } catch (NullPointerException | InputMismatchException |
+             NumberFormatException ex) {
             System.out.println(ex);
             warningE.setText("Check Details again");
+        }catch (DuplicateException e){
+            new Alert(Alert.AlertType.ERROR, "Not Added").show();
         }
 
     }
 
-    private Employee getEmployee() {
+    private EmployeeDTO getEmployee() {
         String nic = txtNicE.getText();
         String name = txtNameE.getText();
         String address = txtAddress.getText();
@@ -465,7 +459,7 @@ public class AdminFormController {
         double salary = Double.parseDouble(txtSalary.getText());
         validateEmployee(nic, name, address, phoneNumber);
         String gender = comboGenderE.getSelectionModel().getSelectedItem();
-        Employee e = new Employee(phoneNumber, nic, name, role, salary, date, address, gender);
+        EmployeeDTO e = new EmployeeDTO(phoneNumber, nic, name, role, salary, date, address, gender);
         return e;
     }
 
@@ -541,22 +535,16 @@ public class AdminFormController {
 
     public void tableEmployeeOnClicked(MouseEvent mouseEvent) {
         EmployeeTM si = employeeTbl.getSelectionModel().getSelectedItem();
-        Employee selectedEmployee = new Employee();
-        try {
-            ArrayList<Employee> allEmployee = EmployeeModel.getAllEmployee();
-            for (Employee employee : allEmployee) {
-                if (employee.getNic().equals(si.getNic())) {
-                    selectedEmployee = employee;
-                    System.out.println(selectedEmployee.getRole());
-                    break;
-                }
+        EmployeeDTO selectedEmployee = new EmployeeDTO();
+        ArrayList<EmployeeDTO> allEmployee = (ArrayList<EmployeeDTO>) es.getAll();
+        for (EmployeeDTO employee : allEmployee) {
+            if (employee.getNic().equals(si.getNic())) {
+                selectedEmployee = employee;
+                System.out.println(selectedEmployee.getRole());
+                break;
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
+
         txtNicE.setText(selectedEmployee.getNic());
         txtNameE.setText(selectedEmployee.getName());
         txtSalary.setText(String.valueOf(selectedEmployee.getSalary()));
@@ -599,9 +587,9 @@ public class AdminFormController {
 
     private void setCustomerTbl() {
         ArrayList<CustomerDTO> customers = (ArrayList<CustomerDTO>) cs.getAllCustomer();
-        ObservableList<CustomerTM> customerTMS = FXCollections.observableArrayList();
+        ObservableList<CustomerTMDTO> customerTMS = FXCollections.observableArrayList();
         for (CustomerDTO c : customers) {
-            CustomerTM ct = new CustomerTM();
+            CustomerTMDTO ct = new CustomerTMDTO();
             ct.setId(c.getId());
             ct.setAddress(c.getAddress());
             ct.setName(c.getName());
@@ -652,7 +640,7 @@ public class AdminFormController {
     }
 
     public void customerTblOnAction(MouseEvent mouseEvent) {
-        CustomerTM si = customerTbl.getSelectionModel().getSelectedItem();
+        CustomerTMDTO si = customerTbl.getSelectionModel().getSelectedItem();
         CustomerDTO customer = new CustomerDTO();
         ArrayList<CustomerDTO> customers = (ArrayList<CustomerDTO>) cs.getAllCustomer();
         for (CustomerDTO c : customers) {
@@ -909,8 +897,8 @@ public class AdminFormController {
     public void comboNicSEOnAction(ActionEvent actionEvent) {
         String nic = comboNicSE.getSelectionModel().getSelectedItem();
         try {
-            ArrayList<Employee> allEmployee = EmployeeModel.getAllEmployee();
-            for (Employee e : allEmployee) {
+            ArrayList<EmployeeDTO> allEmployee = (ArrayList<EmployeeDTO>) es.getAll();
+            for (EmployeeDTO e : allEmployee) {
                 if (e.getNic().equals(nic)) {
                     txtNameES.setText(e.getName());
                     txtRoleSE.setText(e.getRole());

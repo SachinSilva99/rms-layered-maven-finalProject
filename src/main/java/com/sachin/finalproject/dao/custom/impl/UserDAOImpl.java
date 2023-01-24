@@ -87,7 +87,7 @@ public class UserDAOImpl implements UserDAO {
             String role = rs.getString("role");
             String usertype = rs.getString("usertype");
             String name = rs.getString("name");
-            Image image1 = new Image("Image");
+            Image image1 = null;
             User user = new User(username,password,role,usertype,image1,name);
             users.add(user);
         }

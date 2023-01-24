@@ -1,4 +1,4 @@
-package com.sachin.finalproject.to;
+package com.sachin.finalproject.dto;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.scene.control.Button;

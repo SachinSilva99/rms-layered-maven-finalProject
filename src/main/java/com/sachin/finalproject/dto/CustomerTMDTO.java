@@ -1,11 +1,26 @@
-package com.sachin.finalproject.to;
+package com.sachin.finalproject.dto;
 
-public class Customer {
+import com.jfoenix.controls.JFXButton;
+
+public class CustomerTMDTO {
     private String name;
     private String gender;
     private String address;
     private String id;
     private String phoneNumber;
+    private JFXButton button;
+
+    public CustomerTMDTO() {
+    }
+
+    public CustomerTMDTO(String name, String gender, String address, String id, String phoneNumber, JFXButton button) {
+        this.name = name;
+        this.gender = gender;
+        this.address = address;
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.button = button;
+    }
 
     public String getName() {
         return name;
@@ -47,25 +62,11 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public Customer() {
+    public JFXButton getButton() {
+        return button;
     }
 
-    public Customer(String name, String gender, String address, String id, String phoneNumber) {
-        this.setName(name);
-        this.setGender(gender);
-        this.setAddress(address);
-        this.setId(id);
-        this.setPhoneNumber(phoneNumber);
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "name='" + name + '\'' +
-                ", gender='" + gender + '\'' +
-                ", address='" + address + '\'' +
-                ", id='" + id + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+    public void setButton(JFXButton button) {
+        this.button = button;
     }
 }

@@ -8,7 +8,6 @@ import com.sachin.finalproject.dto.SalaryDTO;
 import com.sachin.finalproject.service.custom.SalaryService;
 import com.sachin.finalproject.service.exception.DuplicateException;
 import com.sachin.finalproject.service.util.Converter;
-import com.sachin.finalproject.to.Salary;
 
 import java.sql.Connection;
 import java.util.ArrayList;

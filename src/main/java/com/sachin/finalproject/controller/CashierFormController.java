@@ -3,17 +3,12 @@ package com.sachin.finalproject.controller;
 import com.jfoenix.controls.*;
 import com.sachin.finalproject.db.DBConnection;
 //import com.sachin.finalproject.model.*;
-import com.sachin.finalproject.dto.CustomerDTO;
-import com.sachin.finalproject.dto.ItemDTO;
-import com.sachin.finalproject.dto.OrderDetailDTO;
-import com.sachin.finalproject.dto.OrdersDTO;
+import com.sachin.finalproject.dto.*;
 import com.sachin.finalproject.regex.Validation;
 import com.sachin.finalproject.regex.Validates;
 import com.sachin.finalproject.service.ServiceFactory;
 import com.sachin.finalproject.service.ServiceType;
 import com.sachin.finalproject.service.custom.*;
-import com.sachin.finalproject.to.OrderTm;
-import com.sachin.finalproject.to.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -48,10 +43,8 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 public class CashierFormController {
     private final CustomerService cs = ServiceFactory.getInstance().getService(ServiceType.CUSTOMER);
@@ -63,7 +56,7 @@ public class CashierFormController {
     private final OrderService os = ServiceFactory.getInstance().getService(ServiceType.ORDER);
 
     private double x, y;
-    private User user;
+    private UserDTO user;
     private Image image;
     public Label lblWarning;
     public Label lblOrderId;
@@ -971,7 +964,7 @@ public class CashierFormController {
         }
     }
 
-    public void setUser(String name, Image img, User user) throws SQLException, ClassNotFoundException, FileNotFoundException {
+    public void setUser(String name, Image img, UserDTO user) throws SQLException, ClassNotFoundException, FileNotFoundException {
         System.out.println(image);
         lblCashierName.setText(name);
 

@@ -1,7 +1,10 @@
 package com.sachin.finalproject.controller;
 
-import com.sachin.finalproject.model.UserModel;
-import com.sachin.finalproject.to.User;
+import com.sachin.finalproject.dto.UserDTO;
+import com.sachin.finalproject.service.ServiceFactory;
+import com.sachin.finalproject.service.ServiceType;
+import com.sachin.finalproject.service.custom.UserService;
+
 import com.sachin.finalproject.controller.CashierFormController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,8 +23,10 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class LoginFormController {
+    private final UserService us = ServiceFactory.getInstance().getService(ServiceType.USER);
 
     private double x, y;
     @FXML
@@ -69,13 +74,13 @@ public class LoginFormController {
 
             String password = txtPassword.getText();
 
-            User user = UserModel.getUser(username);
-            if(user == null){
+            Optional<UserDTO> user = us.getUser(username);
+            if(user.isEmpty()){
                 new Alert(Alert.AlertType.ERROR, "Wrong Login").show();
                 return;
             }
-            if(user.getUsername().equals(username) && user.getPassword().equals(password)){
-                if(user.getUserType().equals("cashier")){
+            if(user.get().getUsername().equals(username) && user.get().getPassword().equals(password)){
+                if(user.get().getUserType().equals("cashier")){
 
                     close(actionEvent);
 
@@ -83,13 +88,13 @@ public class LoginFormController {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com.sachin.finalproject/view/CashierForm.fxml"));
                     Parent root = loader.load();
                     CashierFormController cf = loader.getController();
-                    cf.setUser(user.getName(), user.getImg(), user);
+                    cf.setUser(user.get().getName(), user.get().getImg(), user.get());
                     stage.setScene(new Scene(root));
                     show(stage, root);
 
                     new Alert(Alert.AlertType.INFORMATION, "Cashier Login Success\n WELCOME").show();
                 }
-                if(user.getUserType().equals("admin")){
+                if(user.get().getUserType().equals("admin")){
 
                     close(actionEvent);
 
