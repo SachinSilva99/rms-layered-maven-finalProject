@@ -2,10 +2,20 @@ package com.sachin.finalproject.controller;
 
 
 import com.jfoenix.controls.*;
+import com.sachin.finalproject.dao.exception.ConstraintViolationException;
 import com.sachin.finalproject.db.DBConnection;
-import com.sachin.finalproject.model.*;
+import com.sachin.finalproject.dto.CustomerDTO;
+import com.sachin.finalproject.dto.EmployeeDTO;
+import com.sachin.finalproject.dto.ItemDTO;
+import com.sachin.finalproject.dto.SalaryDTO;
+import com.sachin.finalproject.model.EmployeeModel;
 import com.sachin.finalproject.regex.Validation;
 import com.sachin.finalproject.regex.Validates;
+import com.sachin.finalproject.service.ServiceFactory;
+import com.sachin.finalproject.service.ServiceType;
+import com.sachin.finalproject.service.custom.*;
+import com.sachin.finalproject.service.exception.InUseException;
+import com.sachin.finalproject.service.exception.NotFoundException;
 import com.sachin.finalproject.to.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,9 +48,17 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Optional;
 
 public class AdminFormController {
-    private double x,y;
+    private final CustomerService cs = ServiceFactory.getInstance().getService(ServiceType.CUSTOMER);
+    private final EmployeeService es = ServiceFactory.getInstance().getService(ServiceType.EMPLOYEE);
+    private final ItemService is = ServiceFactory.getInstance().getService(ServiceType.ITEM);
+    private final SalaryService salaryS = ServiceFactory.getInstance().getService(ServiceType.SALARY);
+    private final StockService stockS = ServiceFactory.getInstance().getService(ServiceType.STOCK);
+    private final UserService us = ServiceFactory.getInstance().getService(ServiceType.USER);
+
+    private double x, y;
 
     public JFXTextField txtENameS;
 
@@ -50,26 +68,26 @@ public class AdminFormController {
     public JFXButton btnUpdateC;
     public JFXTextField txtId;
     public JFXTextField txtPhoneNumberC;
-    public TableView <CustomerTM> customerTbl;
+    public TableView<CustomerTM> customerTbl;
     public JFXComboBox<String> subCategoryS;
-    public JFXComboBox <String> comboCategoryS;
+    public JFXComboBox<String> comboCategoryS;
     public JFXComboBox<String> comboNameS;
     public JFXTextField txtQtyS;
 
     public Label lblId;
-    public JFXComboBox <String> comboSizeS;
+    public JFXComboBox<String> comboSizeS;
     public JFXTextField txtIdS;
     public JFXTextField txtPrice;
     public JFXButton btnAddS;
-    public JFXComboBox <String> comboCategorySNew;
-    public JFXComboBox <String> subCategorySNew;
+    public JFXComboBox<String> comboCategorySNew;
+    public JFXComboBox<String> subCategorySNew;
     public JFXTextField newItemName;
     public JFXButton btnNewFood;
     public Label lblStockWarning;
     public JFXButton btnUpdateS;
     public JFXDatePicker dateFromSalary;
     public JFXDatePicker dateToSalary;
-    public TableView <Salary> salaryTbl;
+    public TableView<SalaryDTO> salaryTbl;
     public TableColumn colMonthSalary;
     public TableColumn colNicSalary;
     public TableColumn colNameSalary;
@@ -82,15 +100,15 @@ public class AdminFormController {
     public JFXTextField txtSalaryeES;
     public JFXDatePicker dateSalaryES;
     public JFXTextField txtRoleSE;
-    public JFXComboBox <String> comboNicSE;
+    public JFXComboBox<String> comboNicSE;
     public JFXTextField txtNameES;
     public JFXButton btnPay;
     public Button settingsBtn;
     public Pane pnlSettings;
-    public JFXComboBox <String> comboUserType;
+    public JFXComboBox<String> comboUserType;
     public JFXTextField txtUsername;
     public JFXPasswordField txtPasswordUser;
-    public JFXComboBox <String> comboRoleUser;
+    public JFXComboBox<String> comboRoleUser;
     public JFXButton bnChooseimg;
     public JFXButton btnuserSave;
     public ImageView userimg;
@@ -122,7 +140,7 @@ public class AdminFormController {
     private JFXTextField txtNicE;
 
     @FXML
-    private JFXComboBox <String> comboRole;
+    private JFXComboBox<String> comboRole;
 
     @FXML
     private JFXTextField txtSalary;
@@ -137,7 +155,7 @@ public class AdminFormController {
     private JFXTextField txtPhoneNumberE;
 
     @FXML
-    private JFXComboBox <String> comboGenderE;
+    private JFXComboBox<String> comboGenderE;
 
     @FXML
     private JFXButton registerBtn;
@@ -149,19 +167,19 @@ public class AdminFormController {
     private Label warningE;
 
     @FXML
-    private TableView <EmployeeTM> employeeTbl;
+    private TableView<EmployeeTM> employeeTbl;
 
     @FXML
-    private TableColumn <?, ?> colNicE;
+    private TableColumn<?, ?> colNicE;
 
     @FXML
-    private TableColumn <?, ?> colNameE;
+    private TableColumn<?, ?> colNameE;
 
     @FXML
-    private TableColumn <?, ?> colRoleE;
+    private TableColumn<?, ?> colRoleE;
 
     @FXML
-    private TableColumn <?, ?> colDelE;
+    private TableColumn<?, ?> colDelE;
 
     @FXML
     private Pane pnlCustomer;
@@ -173,25 +191,25 @@ public class AdminFormController {
     private JFXTextArea txtNicC;
 
     @FXML
-    private JFXComboBox <String> comboGenderC;
+    private JFXComboBox<String> comboGenderC;
 
     @FXML
     private JFXButton btnUpdate;
 
     @FXML
-    private TableView <String> employeeTbl1;
+    private TableView<String> employeeTbl1;
 
     @FXML
-    private TableColumn <?, ?> colPhoneNumberC;
+    private TableColumn<?, ?> colPhoneNumberC;
 
     @FXML
-    private TableColumn <?, ?> colNameC;
+    private TableColumn<?, ?> colNameC;
 
     @FXML
-    private TableColumn <?, ?> colAddressC;
+    private TableColumn<?, ?> colAddressC;
 
     @FXML
-    private TableColumn <?, ?> colDobEcolDelC1;
+    private TableColumn<?, ?> colDobEcolDelC1;
 
     @FXML
     private Pane pnlSales;
@@ -227,34 +245,35 @@ public class AdminFormController {
     private Pane pnlStock;
 
     public void initialize() {
+        System.out.println("hellooooooooo");
         setSettingsCombo();
         setStockCombos();
         setEmployeeNics();
         setEmployeeTable();
-        ArrayList <String> gender = new ArrayList <>();
+        ArrayList<String> gender = new ArrayList<>();
         gender.add("Male");
         gender.add("Female");
         gender.add("Other");
-        ObservableList <String> genderCombo = FXCollections.observableArrayList(gender);
+        ObservableList<String> genderCombo = FXCollections.observableArrayList(gender);
         comboGenderE.setItems(genderCombo);
         comboGenderC.setItems(genderCombo);
-        ArrayList <String> roles = new ArrayList <>();
+        ArrayList<String> roles = new ArrayList<>();
         roles.add("Manager");
         roles.add("Cashier");
         roles.add("Head Chef");
         roles.add("Chef");
         roles.add("Head Waiter");
         roles.add("Waiter");
-        ObservableList <String> setRoles = FXCollections.observableArrayList(roles);
+        ObservableList<String> setRoles = FXCollections.observableArrayList(roles);
         comboRole.setItems(setRoles);
     }
 
     private void setSettingsCombo() {
-        ObservableList <String> userType = FXCollections.observableArrayList();
+        ObservableList<String> userType = FXCollections.observableArrayList();
         userType.add("admin");
         userType.add("cashier");
         comboUserType.setItems(userType);
-        ObservableList <String> roles = FXCollections.observableArrayList();
+        ObservableList<String> roles = FXCollections.observableArrayList();
         roles.add("Manager");
         roles.add("Cashier");
         roles.add("Head Chef");
@@ -267,12 +286,12 @@ public class AdminFormController {
 
     private void setEmployeeNics() {
         try {
-            ArrayList <Employee> allEmployee = EmployeeModel.getAllEmployee();
-            ArrayList <String> names = new ArrayList <>();
-            for (Employee e : allEmployee) {
+            ArrayList<EmployeeDTO> allEmployee = (ArrayList<EmployeeDTO>) es.getAll();
+            ArrayList<String> names = new ArrayList<>();
+            for (EmployeeDTO e : allEmployee) {
                 names.add(e.getNic());
             }
-            ObservableList <String> employees = FXCollections.observableArrayList(names);
+            ObservableList<String> employees = FXCollections.observableArrayList(names);
             comboNicSE.setItems(employees);
         } catch (Exception e) {
             System.out.println(e);
@@ -281,48 +300,44 @@ public class AdminFormController {
 
     private void setEmployeeTable() {
         setStockCombos();
-        ArrayList <EmployeeTM> employeeTMS = new ArrayList <>();
-        try {
-            for (Employee e : EmployeeModel.getAllEmployee()) {
-                EmployeeTM eTm = new EmployeeTM();
-                eTm.setNic(e.getNic());
-                eTm.setName(e.getName());
-                eTm.setRole(e.getRole());
-                JFXButton btn = new JFXButton();
-                btn.setText("Del");
-                btn.setOnAction(new EventHandler <ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        EmployeeTM selectedE = employeeTbl.getSelectionModel().getSelectedItem();
-                        try {
-                            boolean isDeleted = EmployeeModel.delete(selectedE);
-                            if (isDeleted) {
-                                setEmployeeTable();
-                                employeeTbl.refresh();
-                                new Alert(Alert.AlertType.INFORMATION, "Employee Deleted").show();
-                            }
-                        } catch (SQLException ex) {
-                            throw new RuntimeException(ex);
-                        } catch (ClassNotFoundException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
-                });
-                eTm.setButton(btn);
-                employeeTMS.add(eTm);
-            }
+        ArrayList<EmployeeTM> employeeTMS = new ArrayList<>();
+        for (EmployeeDTO e : es.getAll()) {
+            EmployeeTM eTm = new EmployeeTM();
+            eTm.setNic(e.getNic());
+            eTm.setName(e.getName());
+            eTm.setRole(e.getRole());
+            JFXButton btn = new JFXButton();
+            btn.setText("Del");
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    EmployeeTM selectedE = employeeTbl.getSelectionModel().getSelectedItem();
+                    try {
+                        es.deleteEmployee(selectedE.getNic());
+                        new Alert(Alert.AlertType.INFORMATION, "Employee Deleted").show();
 
-            ObservableList <EmployeeTM> employeesTm = FXCollections.observableArrayList(employeeTMS);
-            colNicE.setCellValueFactory(new PropertyValueFactory <>("nic"));
-            colNameE.setCellValueFactory(new PropertyValueFactory <>("name"));
-            colRoleE.setCellValueFactory(new PropertyValueFactory <>("role"));
-            colDelE.setCellValueFactory(new PropertyValueFactory <>("button"));
-            employeeTbl.setItems(employeesTm);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+                    } catch (ConstraintViolationException e) {
+                        new Alert(Alert.AlertType.ERROR, "Employee in use").show();
+
+                    }
+                        /*boolean isDeleted = EmployeeModel.delete(selectedE);
+                        if (isDeleted) {
+                            setEmployeeTable();
+                            employeeTbl.refresh();
+                            new Alert(Alert.AlertType.INFORMATION, "Employee Deleted").show();
+                        }*/
+                }
+            });
+            eTm.setButton(btn);
+            employeeTMS.add(eTm);
         }
+
+        ObservableList<EmployeeTM> employeesTm = FXCollections.observableArrayList(employeeTMS);
+        colNicE.setCellValueFactory(new PropertyValueFactory<>("nic"));
+        colNameE.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colRoleE.setCellValueFactory(new PropertyValueFactory<>("role"));
+        colDelE.setCellValueFactory(new PropertyValueFactory<>("button"));
+        employeeTbl.setItems(employeesTm);
 
     }
 
@@ -369,6 +384,7 @@ public class AdminFormController {
             show(stage, root);
         }
     }
+
     private void close(MouseEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Stage stagee = (Stage) source.getScene().getWindow();
@@ -527,7 +543,7 @@ public class AdminFormController {
         EmployeeTM si = employeeTbl.getSelectionModel().getSelectedItem();
         Employee selectedEmployee = new Employee();
         try {
-            ArrayList <Employee> allEmployee = EmployeeModel.getAllEmployee();
+            ArrayList<Employee> allEmployee = EmployeeModel.getAllEmployee();
             for (Employee employee : allEmployee) {
                 if (employee.getNic().equals(si.getNic())) {
                     selectedEmployee = employee;
@@ -555,123 +571,117 @@ public class AdminFormController {
     }
 
     public void btnUpdateCOnAction(ActionEvent actionEvent) {
+
+
+        String name = txtNameC.getText();
+        String address = txtAddressC.getText();
+        String gender = comboGenderC.getSelectionModel().getSelectedItem();
+        String phonenumber = txtPhoneNumberC.getText();
+        String id = txtId.getText();
+
+//            boolean isUpdated = CustomerModel.updateCustomer(new Customer(name, gender, address, id, phonenumber));
         try {
-
-            String name = txtNameC.getText();
-            String address = txtAddressC.getText();
-            String gender = comboGenderC.getSelectionModel().getSelectedItem();
-            String phonenumber = txtPhoneNumberC.getText();
-            String id = txtId.getText();
-
-            boolean isUpdated = CustomerModel.updateCustomer(new Customer(name, gender, address, id, phonenumber));
-            if (isUpdated) {
-                new Alert(Alert.AlertType.INFORMATION, "Customer Updated Successfully").show();
-                txtNameC.setText("");
-                txtAddressC.setText("");
-                comboGenderC.setValue("");
-                txtPhoneNumberC.setText("");
-                txtId.setText("");
-                setCustomerTbl();
-                customerTbl.refresh();
-            }
-
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e);
+            cs.updateCustomer(new CustomerDTO(name, gender, address, id, phonenumber));
+            new Alert(Alert.AlertType.INFORMATION, "Customer Updated Successfully").show();
+            txtNameC.setText("");
+            txtAddressC.setText("");
+            comboGenderC.setValue("");
+            txtPhoneNumberC.setText("");
+            txtId.setText("");
+            setCustomerTbl();
+            customerTbl.refresh();
+        } catch (ConstraintViolationException e) {
+            new Alert(Alert.AlertType.ERROR, "Customer Updated failed").show();
         }
+
+
     }
 
     private void setCustomerTbl() {
-        try {
-            ArrayList <Customer> customers = CustomerModel.getAllCustomers();
-            ObservableList <CustomerTM> customerTMS = FXCollections.observableArrayList();
-            for (Customer c : customers) {
-                CustomerTM ct = new CustomerTM();
-                ct.setId(c.getId());
-                ct.setAddress(c.getAddress());
-                ct.setName(c.getName());
-                ct.setGender(c.getGender());
-                ct.setPhoneNumber(c.getPhoneNumber());
-                JFXButton button = new JFXButton("Del");
-                button.setStyle("-fx-background-color: #EA3939");
-                button.setOnAction(new EventHandler <ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
+        ArrayList<CustomerDTO> customers = (ArrayList<CustomerDTO>) cs.getAllCustomer();
+        ObservableList<CustomerTM> customerTMS = FXCollections.observableArrayList();
+        for (CustomerDTO c : customers) {
+            CustomerTM ct = new CustomerTM();
+            ct.setId(c.getId());
+            ct.setAddress(c.getAddress());
+            ct.setName(c.getName());
+            ct.setGender(c.getGender());
+            ct.setPhoneNumber(c.getPhoneNumber());
+            JFXButton button = new JFXButton("Del");
+            button.setStyle("-fx-background-color: #EA3939");
+            button.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
 
-                        ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-                        ButtonType no = new ButtonType("No", ButtonBar.ButtonData.NO);
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete?", yes, no);
-                        alert.showAndWait().ifPresent(buttonType -> {
-                            if (buttonType == yes) {
-                                try {
-                                    boolean isDeleted = CustomerModel.delete(ct.getId());
-                                    if (isDeleted) {
-                                        new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully");
-                                        setCustomerTbl();
-                                        customerTbl.refresh();
-                                        return;
-                                    }
-                                } catch (SQLException | ClassNotFoundException e) {
-                                    System.out.println(e);
-                                }
+                    ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+                    ButtonType no = new ButtonType("No", ButtonBar.ButtonData.NO);
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete?", yes, no);
+                    alert.showAndWait().ifPresent(buttonType -> {
+                        if (buttonType == yes) {
+                            try {
+                                cs.deleteCustomer(ct.getId());
+                                setCustomerTbl();
+                                customerTbl.refresh();
+                                new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully");
+
+                                /*boolean isDeleted = CustomerModel.delete(ct.getId());
+                                if (isDeleted) {
+                                    new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully");
+                                    setCustomerTbl();
+                                    customerTbl.refresh();
+                                    return;
+                                }*/
+                            } catch (InUseException | NotFoundException e) {
+                                System.out.println(e);
                             }
-                            if (buttonType == no) {
-                                return;
-                            }
-                        });
-                    }
-                });
-                ct.setButton(button);
-                customerTMS.add(ct);
-            }
-            colNameC.setCellValueFactory(new PropertyValueFactory <>("name"));
-            colAddressC.setCellValueFactory(new PropertyValueFactory <>("address"));
-            colPhoneNumberC.setCellValueFactory(new PropertyValueFactory <>("phoneNumber"));
-            colDobEcolDelC1.setCellValueFactory(new PropertyValueFactory <>("button"));
-            customerTbl.setItems(customerTMS);
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e);
+                        }
+                        if (buttonType == no) {
+                            return;
+                        }
+                    });
+                }
+            });
+            ct.setButton(button);
+            customerTMS.add(ct);
         }
+        colNameC.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colAddressC.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colPhoneNumberC.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        colDobEcolDelC1.setCellValueFactory(new PropertyValueFactory<>("button"));
+        customerTbl.setItems(customerTMS);
     }
 
     public void customerTblOnAction(MouseEvent mouseEvent) {
         CustomerTM si = customerTbl.getSelectionModel().getSelectedItem();
-        Customer customer = new Customer();
-        try {
-            ArrayList <Customer> customers = CustomerModel.getAllCustomers();
-            for (Customer c : customers) {
-                if (si.getId().equals(c.getId())) {
-                    customer = c;
-                }
+        CustomerDTO customer = new CustomerDTO();
+        ArrayList<CustomerDTO> customers = (ArrayList<CustomerDTO>) cs.getAllCustomer();
+        for (CustomerDTO c : customers) {
+            if (si.getId().equals(c.getId())) {
+                customer = c;
             }
-            txtNameC.setText(customer.getName());
-            txtId.setText(customer.getId());
-            txtPhoneNumberC.setText(customer.getPhoneNumber());
-            txtAddressC.setText(customer.getAddress());
-            comboGenderC.getSelectionModel().selectFirst();
-            comboGenderC.setValue(customer.getGender());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
+        txtNameC.setText(customer.getName());
+        txtId.setText(customer.getId());
+        txtPhoneNumberC.setText(customer.getPhoneNumber());
+        txtAddressC.setText(customer.getAddress());
+        comboGenderC.getSelectionModel().selectFirst();
+        comboGenderC.setValue(customer.getGender());
 
     }
 
     public void btnAddSOnAction(ActionEvent actionEvent) {
         try {
-            Item item = getItem();
-            Item found = ItemModel.getItem(item.getId());
+            ItemDTO item = getItem();
+            ItemDTO found = is.getItem(item.getId());
             if (found != null) {
                 lblStockWarning.setText("Id already exists");
             }
-            boolean isAdded = StockModel.addItem(item);
-            if (isAdded) {
-                new Alert(Alert.AlertType.INFORMATION, "Added Successfully").show();
-                lblStockWarning.setText("");
-                clearItem();
+            stockS.saveItem(item);
+            new Alert(Alert.AlertType.INFORMATION, "Added Successfully").show();
+            lblStockWarning.setText("");
+            clearItem();
 
-            }
-        } catch (SQLException | ClassNotFoundException | RuntimeException e) {
+        } catch (NotFoundException e) {
             System.out.println(e);
             lblStockWarning.setText("Check details Again");
         }
@@ -689,8 +699,8 @@ public class AdminFormController {
         txtPrice.setText("");
     }
 
-    private Item getItem() {
-        Item item = null;
+    private ItemDTO getItem() {
+        ItemDTO item = null;
         try {
 
 
@@ -701,7 +711,7 @@ public class AdminFormController {
             String size = comboSizeS.getSelectionModel().getSelectedItem();
             int qty = Integer.parseInt(txtQtyS.getText());
             double price = Double.parseDouble(txtPrice.getText());
-            item = new Item(0, id, qty, name, price, category, subCategory, size);
+            item = new ItemDTO(0, id, qty, name, price, category, subCategory, size);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -711,7 +721,7 @@ public class AdminFormController {
     }
 
     public void setStockCombos() {
-        ObservableList <String> category = FXCollections.observableArrayList();
+        ObservableList<String> category = FXCollections.observableArrayList();
         category.add("food");
         category.add("dessert");
         category.add("drink");
@@ -724,36 +734,36 @@ public class AdminFormController {
         categorySet(comboCategoryS, subCategoryS);
     }
 
-    private void categorySet(ComboBox <String> comboCategoryS, ComboBox <String> subCategoryS) {
+    private void categorySet(ComboBox<String> comboCategoryS, ComboBox<String> subCategoryS) {
         try {
             String i = comboCategoryS.getSelectionModel().getSelectedItem();
             if (i.equals("food")) {
-                ObservableList <String> subCategory = FXCollections.observableArrayList();
+                ObservableList<String> subCategory = FXCollections.observableArrayList();
                 subCategory.add("rice");
                 subCategory.add("pizza");
                 subCategory.add("soup");
                 subCategoryS.setItems(subCategory);
-                ObservableList <String> items = FXCollections.observableArrayList();
+                ObservableList<String> items = FXCollections.observableArrayList();
                 items.add("regular");
                 items.add("large");
                 comboSizeS.setItems(items);
             }
             if (i.equals("drink")) {
-                ObservableList <String> subCategory = FXCollections.observableArrayList();
+                ObservableList<String> subCategory = FXCollections.observableArrayList();
                 subCategory.add("soft drink");
                 subCategory.add("hot drink");
                 subCategoryS.setItems(subCategory);
-                ObservableList <String> items = FXCollections.observableArrayList();
+                ObservableList<String> items = FXCollections.observableArrayList();
                 items.add("100ML");
                 items.add("300ML");
                 comboSizeS.setItems(items);
             }
             if (i.equals("dessert")) {
-                ObservableList <String> subCategory = FXCollections.observableArrayList();
+                ObservableList<String> subCategory = FXCollections.observableArrayList();
                 subCategory.add("ice cream");
                 subCategory.add("pudding");
                 subCategoryS.setItems(subCategory);
-                ObservableList <String> items = FXCollections.observableArrayList();
+                ObservableList<String> items = FXCollections.observableArrayList();
                 items.add("small");
                 items.add("large");
                 comboSizeS.setItems(items);
@@ -772,11 +782,11 @@ public class AdminFormController {
             String subCategory = subCategoryS.getSelectionModel().getSelectedItem();
 
 
-            ArrayList <String> names = StockModel.getAllNames(category, subCategory);
+            ArrayList<String> names = stockS.getAllFoodNames(category, subCategory);
             for (String n : names) {
                 System.out.println(n);
             }
-            ObservableList <String> namess = FXCollections.observableArrayList();
+            ObservableList<String> namess = FXCollections.observableArrayList();
             namess.addAll(names);
             comboNameS.setItems(namess);
 
@@ -800,35 +810,36 @@ public class AdminFormController {
 
         String id = txtIdS.getText().toLowerCase();
         System.out.println(id);
-        Item item = null;
+        Optional<ItemDTO> itemO = null;
         try {
-            ArrayList <Item> all = StockModel.getAllItems();
-            ArrayList <String> ids = new ArrayList <>();
+            ArrayList<ItemDTO> all = (ArrayList<ItemDTO>) stockS.getAllItems();
+            ArrayList<String> ids = new ArrayList<>();
 
-            for (Item i : all) {
+            for (ItemDTO i : all) {
                 ids.add(i.getId());
             }
             String[] idsAr = ids.toArray(new String[ids.size()]);
 
             //TextFields.bindAutoCompletion(txtIdS, idsAr);
 
-            item = StockModel.getItem(id);
-        } catch (SQLException | ClassNotFoundException | RuntimeException e) {
+            itemO = stockS.getItem(id);
+        } catch (RuntimeException e) {
             System.out.println(e);
         }
-        if (item != null) {
+        if (itemO.isPresent()) {
+            ItemDTO itemDTO = itemO.get();
 
             comboCategoryS.getSelectionModel().select("");
-            comboCategoryS.setValue(item.getCategory());
+            comboCategoryS.setValue(itemDTO.getCategory());
             subCategoryS.getSelectionModel().select("");
-            subCategoryS.setValue(item.getSubCategory());
+            subCategoryS.setValue(itemDTO.getSubCategory());
             comboNameS.getSelectionModel().select("");
-            comboNameS.setValue(item.getDes());
+            comboNameS.setValue(itemDTO.getDes());
             comboSizeS.getSelectionModel().select("");
-            comboSizeS.setValue(item.getSize());
-            txtQtyS.setText(String.valueOf(item.getQtyOnHand()));
+            comboSizeS.setValue(itemDTO.getSize());
+            txtQtyS.setText(String.valueOf(itemDTO.getQtyOnHand()));
 
-            txtPrice.setText(String.valueOf(item.getPrice()));
+            txtPrice.setText(String.valueOf(itemDTO.getPrice()));
             btnAddS.setDisable(true);
             return;
         }
@@ -855,13 +866,12 @@ public class AdminFormController {
                 new Alert(Alert.AlertType.INFORMATION, name + " Please Fill first").show();
                 return;
             }
-            boolean added = ItemModel.addNewFood(category, subCategory, name);
-            if (added) {
-                new Alert(Alert.AlertType.INFORMATION, name + " Added Successfully").show();
-                comboCategorySNew.getSelectionModel().clearSelection();
-                subCategorySNew.getSelectionModel().clearSelection();
-                newItemName.setText("");
-            }
+            is.addNewFood(category,subCategory,name);
+            new Alert(Alert.AlertType.INFORMATION, name + " Added Successfully").show();
+            comboCategorySNew.getSelectionModel().clearSelection();
+            subCategorySNew.getSelectionModel().clearSelection();
+            newItemName.setText("");
+
         } catch (Exception e) {
             new Alert(Alert.AlertType.INFORMATION, "This Item Already added").show();
             System.out.println(e);
@@ -869,13 +879,11 @@ public class AdminFormController {
     }
 
     public void btnUpdateSOnAction(ActionEvent actionEvent) {
-        Item item = getItem();
+        ItemDTO item = getItem();
         try {
-            boolean isUpdated = StockModel.updateItem(item);
-            if (isUpdated) {
-                new Alert(Alert.AlertType.INFORMATION, "Updated Successfully").show();
-            }
-        } catch (SQLException | ClassNotFoundException | RuntimeException e) {
+            stockS.updateItem(item);
+            new Alert(Alert.AlertType.INFORMATION, "Updated Successfully").show();
+        } catch (NotFoundException e) {
             System.out.println(e);
         }
     }
@@ -901,7 +909,7 @@ public class AdminFormController {
     public void comboNicSEOnAction(ActionEvent actionEvent) {
         String nic = comboNicSE.getSelectionModel().getSelectedItem();
         try {
-            ArrayList <Employee> allEmployee = EmployeeModel.getAllEmployee();
+            ArrayList<Employee> allEmployee = EmployeeModel.getAllEmployee();
             for (Employee e : allEmployee) {
                 if (e.getNic().equals(nic)) {
                     txtNameES.setText(e.getName());
@@ -924,8 +932,8 @@ public class AdminFormController {
             LocalDate date = dateSalaryES.getValue();
             int year = date.getYear();
             Month month = date.getMonth();
-            ArrayList <Salary> salaries = SalaryModel.getAll();
-            for (Salary s : salaries) {
+            ArrayList<SalaryDTO> salaries = (ArrayList<SalaryDTO>) salaryS.getAll();
+            for (SalaryDTO s : salaries) {
                 System.out.println(month.toString());
                 System.out.println(s.getMonth().toString());
 
@@ -936,28 +944,28 @@ public class AdminFormController {
                     return;
                 }
             }
-            boolean isAdded = SalaryModel.addSalary(nic, name, role, salary, date, "paid");
-            if (isAdded) {
-                new Alert(Alert.AlertType.INFORMATION, "Salary Paid").show();
-            }
+//            boolean isAdded = SalaryModel.addSalary(nic, name, role, salary, date, "paid");
+            salaryS.saveSalary(new SalaryDTO(nic, name, salary, date, date, "paid"));
+            new Alert(Alert.AlertType.INFORMATION, "Salary Paid").show();
+
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     public void btnLoadDetailsSalary(ActionEvent actionEvent) {
-        colNicSalary.setCellValueFactory(new PropertyValueFactory <>("enic"));
-        colNameSalary.setCellValueFactory(new PropertyValueFactory <>("name"));
-        colSalarySalary.setCellValueFactory(new PropertyValueFactory <>("salary"));
-        colStatus.setCellValueFactory(new PropertyValueFactory <>("status"));
-        colMonthSalary.setCellValueFactory(new PropertyValueFactory <>("month"));
-        colDateSalary.setCellValueFactory(new PropertyValueFactory <>("date"));
+        colNicSalary.setCellValueFactory(new PropertyValueFactory<>("enic"));
+        colNameSalary.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colSalarySalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        colMonthSalary.setCellValueFactory(new PropertyValueFactory<>("month"));
+        colDateSalary.setCellValueFactory(new PropertyValueFactory<>("date"));
         LocalDate date = dateFromSalary.getValue();
         try {
 
-            ArrayList <Salary> sl = SalaryModel.getAllByDate(date.getMonthValue(), date.getYear());
+            ArrayList<SalaryDTO> sl = salaryS.getAllByDate( date.getMonthValue(), date.getYear());
 
-            ObservableList <Salary> tms = FXCollections.observableArrayList(sl);
+            ObservableList<SalaryDTO> tms = FXCollections.observableArrayList(sl);
             salaryTbl.setItems(tms);
         } catch (Exception e) {
             System.out.println(e);
@@ -1017,7 +1025,7 @@ public class AdminFormController {
     public void txtQtySOnReleased(KeyEvent keyEvent) {
         String qty = txtQtyS.getText();
         boolean match = Validation.match(qty, Validates.QTY);
-        if(match){
+        if (match) {
             txtQtyS.setStyle("-jfx-focus-color : green");
             return;
         }
@@ -1027,7 +1035,7 @@ public class AdminFormController {
     public void txtPriceOnReleased(KeyEvent keyEvent) {
         String price = txtPrice.getText();
         boolean match = Validation.match(price, Validates.QTY);
-        if(match){
+        if (match) {
             txtPrice.setStyle("-jfx-focus-color : green");
             return;
         }
@@ -1037,7 +1045,7 @@ public class AdminFormController {
     public void txtNameCOnKeyReleased(KeyEvent keyEvent) {
         String name = txtNameC.getText();
         boolean match = Validation.match(name, Validates.NAME);
-        if(match){
+        if (match) {
             txtNameC.setStyle("-jfx-focus-color : green");
             return;
         }
@@ -1047,7 +1055,7 @@ public class AdminFormController {
     public void txtPhoneNumberCOnKeyReleased(KeyEvent keyEvent) {
         String phoneN = txtPhoneNumberC.getText();
         boolean match = Validation.match(phoneN, Validates.PHONE_NUMBER);
-        if (match){
+        if (match) {
             txtPhoneNumberC.setStyle("-jfx-focus-color : green");
             return;
         }
@@ -1057,7 +1065,7 @@ public class AdminFormController {
     public void txtAddressCOnKeyReleased(KeyEvent keyEvent) {
         String address = txtAddressC.getText();
         boolean match = Validation.match(address, Validates.ADDRESS);
-        if(match){
+        if (match) {
             txtAddressC.setStyle("-jfx-focus-color : green");
             return;
         }

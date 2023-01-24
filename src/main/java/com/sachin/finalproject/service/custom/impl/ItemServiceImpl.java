@@ -17,6 +17,7 @@ import com.sachin.finalproject.service.util.Converter;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ItemServiceImpl implements ItemService {
@@ -30,6 +31,15 @@ public class ItemServiceImpl implements ItemService {
         this.itemDAO = DaoFactory.getInstance().getDao(connection, DaoType.ITEM);
         this.foodDAO = DaoFactory.getInstance().getDao(connection,DaoType.FOOD);
         this.converter = new Converter();
+    }
+
+    @Override
+    public ItemDTO getItem(String id) throws NotFoundException {
+        Optional<Item> item = itemDAO.findByPk(id);
+        if(item.isPresent()) {
+           return converter.fromItem(item.get());
+        }
+        throw new NotFoundException("Item not found");
     }
 
     @Override

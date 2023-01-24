@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudDAO<T extends SuperEntity,ID> extends Serializable {
+public interface CrudDAO<T extends SuperEntity,ID> extends SuperDAO {
     T save(T t) throws ConstraintViolationException;
 
     T update(T t)throws ConstraintViolationException;

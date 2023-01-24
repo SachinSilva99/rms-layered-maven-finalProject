@@ -92,7 +92,12 @@ public class EmployeeDaoImpl implements EmployeeDAO {
 
     @Override
     public boolean existByPk(String pk) {
-        return CrudUtil.execute("SELECT * FROM employee where nic = ?", pk);
+        ResultSet rs = CrudUtil.execute("SELECT * FROM employee where nic = ?", pk);
+        try {
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginFormController {
 
@@ -104,8 +105,8 @@ public class LoginFormController {
                 new Alert(Alert.AlertType.ERROR, "Wrong Login").show();
             }
 
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
