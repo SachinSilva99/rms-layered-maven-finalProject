@@ -374,7 +374,7 @@ public class AdminFormController {
             hidePamels();
             close(mouseEvent);
             Stage stage = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sachin/finalproject/view/LoginForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com.sachin.finalproject/view/LoginForm.fxml"));
             Parent root = loader.load();
 
             stage.setScene(new Scene(root));
